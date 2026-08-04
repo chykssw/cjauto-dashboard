@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CJ Auto — รายงานยอดขาย 6 สาขา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --amber-1:#d97706; --amber-1-2:#d97706; --ink:#1c2b3a; --sub:#1c2b3a; --line:#1c2b3a;
+    --bg:#f4f6f9; --card:#ffffff;
+    --green:#16a34a; --green-bg:#e9f7ef;
+    --red:#dc2626; --red-bg:#fdecec;
+    --amber-1:#d97706; --amber-1-bg:#ffffff;
+    --blue:#2563eb; --blue-bg:#eaf1fe;
+    --gray-bg:#eef1f5;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);font-family:'Noto Sans Thai',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:780px;margin:0 auto;padding:14px 14px 60px;}
+
+  .header{background:linear-gradient(135deg,var(--amber-1),var(--amber-1-2));border-radius:16px;padding:18px 20px;color:#fff;box-shadow:0 6px 18px rgba(15,39,64,.18);}
+  .header h1{margin:0;font-size:19px;font-weight:700;display:flex;align-items:center;gap:8px;}
+  .header .sub{margin-top:6px;font-size:12.5px;color:#ffffff;display:flex;flex-wrap:wrap;}
+  .header .sub span:not(:last-child)::after{content:"·";margin:0 7px;color:#5f7c98;}
+
+  .toggle-row{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px;flex-wrap:wrap;}
+  .segmented{display:inline-flex;background:rgba(255,255,255,.12);border-radius:10px;padding:3px;}
+  .segmented button{border:none;background:transparent;padding:7px 16px;border-radius:8px;font-family:inherit;font-size:13.5px;font-weight:600;color:#ffffff;cursor:pointer;transition:all .15s ease;}
+  .segmented button.active{background:#fff;color:var(--amber-1);box-shadow:0 2px 6px rgba(0,0,0,.15);}
+  .picker{display:flex;align-items:center;gap:8px;}
+  .picker select{
+    font-family:inherit;font-size:13px;font-weight:600;color:#fff;background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:7px 10px;cursor:pointer;
+  }
+  .picker select option{color:#1c2b3a;}
+
+  .tabs{display:flex;gap:8px;margin-top:14px;overflow-x:auto;padding-bottom:2px;}
+  .tabs button{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--sub);padding:8px 16px;border-radius:20px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap;}
+  .tabs button.active{background:var(--amber-1);color:#fff;border-color:var(--amber-1);}
+
+  .panel{display:none;} .panel.active{display:block;}
+
+  .notice{margin-top:12px;padding:11px 14px;border-radius:10px;font-size:13px;display:flex;gap:8px;align-items:flex-start;line-height:1.5;}
+  .notice.gray{background:var(--gray-bg);color:#475569;}
+  .notice.green{background:var(--green-bg);color:#166534;}
+  .notice.blue{background:var(--blue-bg);color:#1e40af;}
+  .notice.red{background:var(--red-bg);color:#991b1b;}
+  .notice b{font-weight:700;}
+
+  .main-card{margin-top:14px;background:var(--card);border-radius:14px;padding:26px 20px;text-align:center;box-shadow:0 1px 3px rgba(20,30,45,.06);border:1px solid var(--line);}
+  .main-card .icon{font-size:26px;}
+  .main-card .num{font-size:32px;font-weight:800;color:var(--ink);margin-top:4px;letter-spacing:.3px;}
+  .main-card .cap{font-size:12.5px;color:var(--sub);margin-top:5px;}
+  .main-card .delta{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;}
+  .delta.up{background:var(--green-bg);color:var(--green);} .delta.down{background:var(--red-bg);color:var(--red);} .delta.flat{background:var(--gray-bg);color:var(--sub);}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+  .stat-card{background:var(--card);border-radius:14px;padding:18px 14px;text-align:center;border:1px solid var(--line);box-shadow:0 1px 3px rgba(20,30,45,.05);}
+  .stat-card .icon{font-size:19px;}
+  .stat-card .num{font-size:20px;font-weight:800;margin-top:5px;color:var(--ink);}
+  .stat-card .cap{font-size:11.5px;color:var(--sub);margin-top:4px;}
+
+  .section-card{margin-top:14px;background:var(--card);border-radius:14px;padding:16px 16px 6px;border:1px solid var(--line);box-shadow:0 1px 3px rgba(20,30,45,.05);}
+  .section-title{font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;margin-bottom:12px;}
+
+  .branch-row{display:flex;justify-content:space-between;align-items:center;padding:12px 4px;border-bottom:1px solid var(--line);gap:10px;}
+  .branch-row:last-child{border-bottom:none;}
+  .branch-rank{width:22px;height:22px;border-radius:50%;background:var(--amber-1);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .branch-rank.top{background:var(--amber-1);color:#fff;}
+  .branch-name{font-size:13.5px;font-weight:600;color:var(--ink);}
+  .branch-sub{font-size:11px;color:var(--sub);margin-top:2px;}
+  .branch-right{text-align:right;flex:0 0 auto;}
+  .branch-amount{font-size:14px;font-weight:700;color:var(--ink);}
+  .badge{display:inline-block;margin-top:4px;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;}
+  .badge.green{background:var(--green-bg);color:var(--green);}
+  .badge.amber-1{background:var(--amber-1-bg);color:var(--amber-1);}
+  .badge.red{background:var(--red-bg);color:var(--red);}
+  .badge.navy{background:var(--blue-bg);color:var(--blue);}
+
+  .mini-delta{display:block;margin-top:3px;font-size:10.5px;font-weight:700;}
+  .mini-delta.up{color:var(--green);}
+  .mini-delta.down{color:var(--red);}
+  .mini-delta.flat{color:var(--sub);}
+
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .tbl th{text-align:left;color:var(--sub);font-weight:600;font-size:10.5px;padding:8px 6px;border-bottom:1px solid var(--line);text-transform:uppercase;letter-spacing:.3px;}
+  .tbl td{padding:10px 6px;border-bottom:1px solid var(--line);font-weight:600;}
+  .tbl td.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .tbl tr:last-child td{border-bottom:none;}
+
+  .bar-row{margin-bottom:14px;}
+  .bar-label{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;margin-bottom:5px;}
+  .bar-label .amt{color:var(--sub);font-weight:700;}
+  .bar-track{background:var(--gray-bg);border-radius:8px;height:14px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:8px;background:var(--amber-1);}
+  .bar-fill.disc{background:linear-gradient(90deg,#f0a94e,var(--amber-1));}
+  .bar-track.flat{border-radius:0;}
+  .bar-fill.flat{border-radius:0;}
+
+  .sub-select{margin:10px 0 6px;display:flex;justify-content:flex-end;}
+  .sub-select select{font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink);background:var(--gray-bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;}
+
+  .upload-row{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .upload-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s ease;}
+  .upload-btn:hover{background:rgba(255,255,255,.24);}
+  .upload-status{font-size:11.5px;color:#ffffff;line-height:1.4;}
+  .upload-status.err{color:#1c2b3a;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>🚗 CJ Auto — รายงานยอดขาย</h1>
+    <div class="sub">
+      <span id="hdrDate">—</span>      
+      <span id="hdrTotal">—</span>
+    </div>
+    <div id="liveSyncStatus" style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px;">🟡 กำลังเชื่อมต่อ Google Sheet…</div>
+    <div class="toggle-row">
+      <div class="segmented">
+        <button id="btnDaily" class="active" onclick="setPeriod('daily')">รายวัน</button>
+        <button id="btnWeekly" onclick="setPeriod('weekly')">รายสัปดาห์</button>
+        <button id="btnMonthly" onclick="setPeriod('monthly')">รายเดือน</button>
+      </div>
+      <div class="picker">
+        <select id="dateSelect" onchange="onDateChange()"></select>
+        <select id="weekSelect" onchange="onWeekChange()" style="display:none"></select>
+        <select id="monthSelect" onchange="onMonthChange()" style="display:none"></select>
+      </div>
+    </div>
+
+    <div style="text-align:right;margin-top:10px;">
+      <a href="#" id="adminLoginLink" onclick="toggleAdminLogin();return false;" style="font-size:11px;color:rgba(255,255,255,.65);text-decoration:underline;cursor:pointer;">🔒 สำหรับผู้ดูแลระบบ</a>
+    </div>
+    <div id="adminPanel" style="display:none;flex-direction:column;">
+      <div class="upload-row">
+        <label class="upload-btn" for="fileInput">📤 อัพเดตข้อมูลจากไฟล์ Excel</label>
+        <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="handleFileUpload(event)" style="display:none;">
+        <span class="upload-status" id="uploadStatus">—</span>
+      </div>
+
+      <div class="upload-row">
+        <input type="text" id="sheetUrlInput" placeholder="วางลิงก์ Google Sheet ที่นี่"
+          style="flex:1;min-width:180px;padding:7px 10px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1c2b3a;font-size:12.5px;">
+        <button class="upload-btn" style="border:1px solid rgba(255,255,255,.3);cursor:pointer;" onclick="handleGoogleSheetLoad()">🔗 ดึงข้อมูลจาก Google Sheet</button>
+        <span class="upload-status" id="sheetStatus">—</span>
+      </div>
+
+      <div class="upload-row" style="flex-direction:column;align-items:stretch;">
+        <div style="color:#fff;font-size:12.5px;font-weight:700;margin-bottom:4px;">🎯 ตั้งเป้าหมายยอดขายรายเดือน</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+          <span style="color:rgba(255,255,255,.85);font-size:12px;min-width:90px;">เป้ารวมทั้งหมด</span>
+          <input type="number" id="targetOverallInput" min="0" placeholder="เช่น 400000"
+            style="width:140px;padding:6px 9px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1c2b3a;font-size:12.5px;">
+        </div>
+        <div id="targetBranchInputs" style="display:flex;flex-direction:column;gap:6px;"></div>
+        <button class="upload-btn" style="border:1px solid rgba(255,255,255,.3);cursor:pointer;align-self:flex-start;margin-top:6px;" onclick="saveTargets()">💾 บันทึกเป้าหมาย</button>
+        <span class="upload-status" id="targetStatus">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="overview" onclick="setTab('overview')">ภาพรวม</button>
+    <button class="tab-btn" data-tab="branch" onclick="setTab('branch')">รายสาขา</button>
+    <button class="tab-btn" data-tab="chart" onclick="setTab('chart')">กราฟ</button>
+    <button class="tab-btn" data-tab="channel" onclick="setTab('channel')">ช่องทางลูกค้า</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="panel active" id="panel-overview">
+    <div class="notice green" id="noticeTop">🏆 <span>—</span></div>
+    <div class="notice gray" id="noticeLow">🔻 <span>—</span></div>
+
+    <div class="main-card">
+      <div class="icon">💰</div>
+      <div class="num" id="mainTotal">—</div>
+      <div class="cap" id="mainCap">ยอดขายรวม (6 สาขา)</div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+        <div class="delta up" id="mainDelta">—</div>
+        <div class="delta up" id="mainDeltaMoM">—</div>
+      </div>
+      <div id="targetOverviewBlock" style="display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--sub);margin-bottom:5px;">
+          <span>🎯 เป้าหมายเดือนนี้</span>
+          <span id="targetOverviewText" style="font-weight:700;color:var(--ink);">—</span>
+        </div>
+        <div class="bar-track flat" style="height:10px;"><div id="targetOverviewFill" class="bar-fill flat" style="width:0%;"></div></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="stat-card"><div class="icon">🧾</div><div class="num" id="statBills">—</div><div class="cap">จำนวนบิลทั้งหมด</div></div>
+      <div class="stat-card"><div class="icon">📈</div><div class="num" id="statAvg">—</div><div class="cap">ยอดขายเฉลี่ยต่อบิล</div></div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title" id="branchListTitle">🏬 สรุปยอดขายรายสาขา</div>
+      <div id="branchList"></div>
+    </div>
+  </div>
+
+  <!-- BRANCH TABLE -->
+  <div class="panel" id="panel-branch">
+    <div class="section-card" style="margin-top:12px;">
+      <div class="section-title">📊 เปรียบเทียบยอดขายทุกสาขา</div>
+      <div style="overflow-x:auto;">
+      <table class="tbl">
+        <thead><tr><th>สาขา</th><th style="text-align:right">ยอดขาย</th><th style="text-align:right">ส่วนลด</th><th style="text-align:right">%ส่วนลด</th><th style="text-align:right">บิล</th><th style="text-align:right">เฉลี่ย/บิล</th><th style="text-align:right">% ส่วนแบ่ง</th><th style="text-align:right" id="changeColHeaderDoD">DoD</th><th style="text-align:right" id="changeColHeaderMoM">MoM</th></tr></thead>
+        <tbody id="branchTableBody"></tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHART -->
+  <div class="panel" id="panel-chart">
+    <div class="section-card" style="margin-top:12px;">
+      <div class="section-title" id="chartTitle">📊 ยอดขายรายสาขา</div>
+      <div id="chartBars"></div>
+    </div>
+  </div>
+
+  <!-- CHANNEL -->
+  <div class="panel" id="panel-channel">
+    <div class="sub-select" style="justify-content:space-between;align-items:center;">
+      <span id="channelPeriodLabel" style="font-size:12.5px;font-weight:700;color:var(--sub);"></span>
+      <select id="channelMonthSelect" onchange="renderChannel()"></select>
+    </div>
+    <div class="section-card" style="margin-top:0;">
+      <div class="section-title">👥 กลุ่มลูกค้า (Online / Offline / ลูกค้าเก่า) — แตะเพื่อดูช่องทางย่อย</div>
+      <div id="groupBars"></div>
+    </div>
+  </div>
+
+</div>
+
+<script id="raw-data" type="application/json">
+{"branches": ["CJA1", "CJA2", "CJA3", "CJA4", "CJA5", "CJA6"], "months": ["2026-06", "2026-07", "2026-08"], "dates": ["2026-06-01", "2026-06-02", "2026-06-04", "2026-06-05", "2026-06-06", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-27", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-04", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-11", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-18", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-25", "2026-07-27", "2026-07-29", "2026-07-30", "2026-07-31", "2026-08-01"], "daily": {"2026-06-01": {"_dayTh": "จันทร์", "CJA6": {"revenue": 62348.0, "bills": 7, "qty": 95.0, "discount": 2625.0, "returning": 2}, "CJA4": {"revenue": 49536.0, "bills": 8, "qty": 70.0, "discount": 2355.0, "returning": 5}, "CJA3": {"revenue": 34274.5, "bills": 6, "qty": 82.5, "discount": 2047.5, "returning": 1}, "CJA2": {"revenue": 116186.5, "bills": 11, "qty": 170.5, "discount": 4672.5, "returning": 1}, "CJA1": {"revenue": 46875.5, "bills": 8, "qty": 95.5, "discount": 3189.5, "returning": 4}, "CJA5": {"revenue": 57344.0, "bills": 10, "qty": 123.5, "discount": 2475.0, "returning": 2}}, "2026-06-02": {"_dayTh": "อังคาร", "CJA2": {"revenue": 89918.8, "bills": 11, "qty": 143.5, "discount": 5062.5, "returning": 3}, "CJA3": {"revenue": 129875.0, "bills": 9, "qty": 148.0, "discount": 5985.0, "returning": 2}, "CJA5": {"revenue": 37470.0, "bills": 8, "qty": 86.0, "discount": 1800.0, "returning": 2}, "CJA1": {"revenue": 60032.5, "bills": 11, "qty": 150.5, "discount": 5112.5, "returning": 7}, "CJA6": {"revenue": 52906.0, "bills": 6, "qty": 103.0, "discount": 2790.0, "returning": 1}, "CJA4": {"revenue": 5742.5, "bills": 4, "qty": 13.5, "discount": 577.5, "returning": 3}}, "2026-06-04": {"_dayTh": "พฤหัสบดี", "CJA5": {"revenue": 34400.0, "bills": 8, "qty": 83.0, "discount": 2385.0, "returning": 4}, "CJA1": {"revenue": 107187.5, "bills": 11, "qty": 157.5, "discount": 7291.5, "returning": 9}, "CJA2": {"revenue": 105491.0, "bills": 16, "qty": 234.0, "discount": 7905.0, "returning": 3}, "CJA4": {"revenue": 19600.0, "bills": 3, "qty": 36.0, "discount": 1290.0, "returning": 2}, "CJA3": {"revenue": 41855.0, "bills": 7, "qty": 77.0, "discount": 1560.0, "returning": 3}, "CJA6": {"revenue": 20740.0, "bills": 3, "qty": 28.5, "discount": 825.0, "returning": 1}}, "2026-06-05": {"_dayTh": "ศุกร์", "CJA5": {"revenue": 29698.0, "bills": 10, "qty": 85.0, "discount": 1980.0, "returning": 2}, "CJA6": {"revenue": 34427.5, "bills": 5, "qty": 35.5, "discount": 1117.5, "returning": 1}, "CJA1": {"revenue": 92759.0, "bills": 6, "qty": 229.0, "discount": 3025.0, "returning": 5}, "CJA4": {"revenue": 21060.0, "bills": 3, "qty": 25.0, "discount": 780.0, "returning": 1}, "CJA3": {"revenue": 72327.5, "bills": 10, "qty": 138.0, "discount": 3472.5, "returning": 5}, "CJA2": {"revenue": 80279.0, "bills": 11, "qty": 140.0, "discount": 4215.0, "returning": 3}}, "2026-06-06": {"_dayTh": "เสาร์", "CJA5": {"revenue": 21205.0, "bills": 10, "qty": 70.0, "discount": 1575.0, "returning": 4}, "CJA1": {"revenue": 178843.5, "bills": 14, "qty": 203.5, "discount": 9087.5, "returning": 8}, "CJA3": {"revenue": 51697.5, "bills": 12, "qty": 125.5, "discount": 6277.5, "returning": 3}, "CJA2": {"revenue": 144570.5, "bills": 14, "qty": 181.5, "discount": 5977.5, "returning": 4}, "CJA4": {"revenue": 52174.5, "bills": 7, "qty": 79.5, "discount": 2392.5, "returning": 3}, "CJA6": {"revenue": 27038.0, "bills": 7, "qty": 57.0, "discount": 2130.0, "returning": 2}}, "2026-06-08": {"_dayTh": "จันทร์", "CJA6": {"revenue": 56179.5, "bills": 9, "qty": 120.5, "discount": 3067.5, "returning": 2}, "CJA5": {"revenue": 35371.0, "bills": 8, "qty": 80.0, "discount": 1785.0, "returning": 5}, "CJA2": {"revenue": 92349.0, "bills": 9, "qty": 134.0, "discount": 4785.0, "returning": 4}, "CJA4": {"revenue": 22450.0, "bills": 4, "qty": 30.0, "discount": 1170.0, "returning": 1}, "CJA1": {"revenue": 22301.0, "bills": 7, "qty": 37.0, "discount": 1709.0, "returning": 4}, "CJA3": {"revenue": 58903.0, "bills": 7, "qty": 101.0, "discount": 3765.0, "returning": 2}}, "2026-06-09": {"_dayTh": "อังคาร", "CJA1": {"revenue": 132015.5, "bills": 14, "qty": 167.5, "discount": 6467.5, "returning": 7}, "CJA5": {"revenue": 38276.0, "bills": 6, "qty": 44.0, "discount": 1860.0, "returning": 2}, "CJA6": {"revenue": 20490.0, "bills": 2, "qty": 31.0, "discount": 900.0, "returning": 0}, "CJA2": {"revenue": 75683.5, "bills": 9, "qty": 104.5, "discount": 3842.5, "returning": 3}, "CJA3": {"revenue": 69391.0, "bills": 6, "qty": 106.0, "discount": 2910.0, "returning": 2}, "CJA4": {"revenue": 38552.0, "bills": 4, "qty": 32.0, "discount": 1575.0, "returning": 2}}, "2026-06-10": {"_dayTh": "พุธ", "CJA6": {"revenue": 32808.5, "bills": 6, "qty": 72.5, "discount": 1612.5, "returning": 4}, "CJA4": {"revenue": 70552.0, "bills": 3, "qty": 68.0, "discount": 2145.0, "returning": 2}, "CJA1": {"revenue": 70646.0, "bills": 7, "qty": 97.0, "discount": 3578.0, "returning": 3}, "CJA3": {"revenue": 14182.0, "bills": 5, "qty": 43.0, "discount": 1425.0, "returning": 1}, "CJA5": {"revenue": 15841.0, "bills": 6, "qty": 40.0, "discount": 1155.0, "returning": 4}, "CJA2": {"revenue": 85274.5, "bills": 11, "qty": 154.5, "discount": 4928.5, "returning": 3}}, "2026-06-11": {"_dayTh": "พฤหัสบดี", "CJA4": {"revenue": 48237.5, "bills": 3, "qty": 57.5, "discount": 1912.5, "returning": 0}, "CJA3": {"revenue": 23719.0, "bills": 8, "qty": 69.0, "discount": 2265.0, "returning": 4}, "CJA6": {"revenue": 60977.5, "bills": 7, "qty": 103.5, "discount": 2362.5, "returning": 1}, "CJA2": {"revenue": 150549.0, "bills": 8, "qty": 159.0, "discount": 4905.0, "returning": 4}, "CJA5": {"revenue": 31332.0, "bills": 5, "qty": 44.0, "discount": 1950.0, "returning": 3}, "CJA1": {"revenue": 56262.0, "bills": 11, "qty": 105.0, "discount": 3165.0, "returning": 6}}, "2026-06-12": {"_dayTh": "ศุกร์", "CJA6": {"revenue": 7090.0, "bills": 6, "qty": 19.0, "discount": 510.0, "returning": 4}, "CJA1": {"revenue": 115210.5, "bills": 14, "qty": 222.5, "discount": 15007.5, "returning": 6}, "CJA5": {"revenue": 39594.0, "bills": 10, "qty": 100.0, "discount": 2850.0, "returning": 4}, "CJA4": {"revenue": 25462.0, "bills": 4, "qty": 50.0, "discount": 1710.0, "returning": 4}, "CJA2": {"revenue": 59448.5, "bills": 7, "qty": 110.5, "discount": 3397.5, "returning": 1}, "CJA3": {"revenue": 63593.0, "bills": 6, "qty": 103.0, "discount": 4155.0, "returning": 4}}, "2026-06-13": {"_dayTh": "เสาร์", "CJA3": {"revenue": 47055.0, "bills": 10, "qty": 77.0, "discount": 5214.0, "returning": 2}, "CJA1": {"revenue": 88016.5, "bills": 9, "qty": 118.0, "discount": 3402.5, "returning": 4}, "CJA4": {"revenue": 10580.0, "bills": 3, "qty": 23.0, "discount": 390.0, "returning": 1}, "CJA2": {"revenue": 93217.0, "bills": 10, "qty": 153.0, "discount": 4935.0, "returning": 2}, "CJA6": {"revenue": 60078.0, "bills": 8, "qty": 109.0, "discount": 2220.0, "returning": 4}, "CJA5": {"revenue": 52634.0, "bills": 7, "qty": 93.0, "discount": 2280.0, "returning": 2}}, "2026-06-15": {"_dayTh": "จันทร์", "CJA4": {"revenue": 37278.0, "bills": 5, "qty": 52.0, "discount": 1890.0, "returning": 2}, "CJA5": {"revenue": 29762.0, "bills": 8, "qty": 76.5, "discount": 1725.0, "returning": 5}, "CJA6": {"revenue": 33690.0, "bills": 7, "qty": 64.0, "discount": 1680.0, "returning": 2}, "CJA1": {"revenue": 160918.5, "bills": 13, "qty": 297.0, "discount": 10673.5, "returning": 4}, "CJA3": {"revenue": 67782.5, "bills": 9, "qty": 111.5, "discount": 3892.5, "returning": 0}, "CJA2": {"revenue": 42444.5, "bills": 11, "qty": 101.5, "discount": 3382.5, "returning": 1}}, "2026-06-16": {"_dayTh": "อังคาร", "CJA1": {"revenue": 45187.5, "bills": 10, "qty": 72.5, "discount": 2907.5, "returning": 5}, "CJA2": {"revenue": 79489.0, "bills": 11, "qty": 118.0, "discount": 3795.0, "returning": 4}, "CJA3": {"revenue": 53841.0, "bills": 10, "qty": 92.0, "discount": 14395.0, "returning": 2}, "CJA4": {"revenue": 29465.0, "bills": 3, "qty": 47.0, "discount": 1335.0, "returning": 3}, "CJA6": {"revenue": 50975.0, "bills": 4, "qty": 71.0, "discount": 1875.0, "returning": 3}, "CJA5": {"revenue": 13580.0, "bills": 4, "qty": 41.0, "discount": 900.0, "returning": 1}}, "2026-06-17": {"_dayTh": "พุธ", "CJA3": {"revenue": 24497.0, "bills": 7, "qty": 58.0, "discount": 1680.0, "returning": 1}, "CJA5": {"revenue": 42094.0, "bills": 9, "qty": 80.0, "discount": 1230.0, "returning": 4}, "CJA2": {"revenue": 34650.5, "bills": 8, "qty": 80.5, "discount": 2812.5, "returning": 2}, "CJA1": {"revenue": 45736.5, "bills": 11, "qty": 88.5, "discount": 2704.5, "returning": 6}, "CJA6": {"revenue": 14320.0, "bills": 4, "qty": 22.0, "discount": 2821.0, "returning": 1}, "CJA4": {"revenue": 6845.0, "bills": 3, "qty": 14.0, "discount": 675.0, "returning": 1}}, "2026-06-18": {"_dayTh": "พฤหัสบดี", "CJA2": {"revenue": 105891.0, "bills": 14, "qty": 213.0, "discount": 7455.0, "returning": 9}, "CJA5": {"revenue": 34815.5, "bills": 10, "qty": 105.5, "discount": 2797.5, "returning": 3}, "CJA1": {"revenue": 108646.5, "bills": 12, "qty": 162.0, "discount": 5617.5, "returning": 6}, "CJA3": {"revenue": 52089.5, "bills": 9, "qty": 59.5, "discount": 2467.5, "returning": 1}, "CJA6": {"revenue": 26332.5, "bills": 5, "qty": 41.5, "discount": 1162.5, "returning": 2}, "CJA4": {"revenue": 15384.0, "bills": 2, "qty": 28.0, "discount": 930.0, "returning": 1}}, "2026-06-19": {"_dayTh": "ศุกร์", "CJA2": {"revenue": 42081.0, "bills": 8, "qty": 97.0, "discount": 3855.0, "returning": 1}, "CJA1": {"revenue": 29456.0, "bills": 10, "qty": 57.0, "discount": 3395.0, "returning": 4}, "CJA5": {"revenue": 21977.0, "bills": 9, "qty": 67.0, "discount": 1125.0, "returning": 0}, "CJA6": {"revenue": 16280.0, "bills": 3, "qty": 42.0, "discount": 660.0, "returning": 0}, "CJA3": {"revenue": 32725.0, "bills": 5, "qty": 70.0, "discount": 2865.0, "returning": 2}, "CJA4": {"revenue": 21145.0, "bills": 2, "qty": 17.0, "discount": 195.0, "returning": 2}}, "2026-06-20": {"_dayTh": "เสาร์", "CJA3": {"revenue": 27766.1, "bills": 7, "qty": 67.5, "discount": 2614.9, "returning": 0}, "CJA4": {"revenue": 55994.0, "bills": 7, "qty": 83.0, "discount": 2010.0, "returning": 3}, "CJA2": {"revenue": 61349.0, "bills": 10, "qty": 127.0, "discount": 4410.0, "returning": 3}, "CJA6": {"revenue": 43787.0, "bills": 7, "qty": 102.0, "discount": 2790.0, "returning": 4}, "CJA5": {"revenue": 38162.0, "bills": 10, "qty": 97.0, "discount": 1785.0, "returning": 2}, "CJA1": {"revenue": 145867.4, "bills": 10, "qty": 197.5, "discount": 7250.6, "returning": 8}}, "2026-06-22": {"_dayTh": "จันทร์", "CJA5": {"revenue": 50499.0, "bills": 8, "qty": 114.0, "discount": 2970.0, "returning": 5}, "CJA2": {"revenue": 44768.5, "bills": 10, "qty": 88.5, "discount": 3862.5, "returning": 4}, "CJA1": {"revenue": 40560.0, "bills": 8, "qty": 96.5, "discount": 2415.0, "returning": 3}, "CJA6": {"revenue": 38110.0, "bills": 4, "qty": 62.0, "discount": 1800.0, "returning": 3}, "CJA3": {"revenue": 38989.0, "bills": 7, "qty": 81.0, "discount": 2865.0, "returning": 1}, "CJA4": {"revenue": 24283.0, "bills": 2, "qty": 35.0, "discount": 975.0, "returning": 0}}, "2026-06-23": {"_dayTh": "อังคาร", "CJA4": {"revenue": 43533.0, "bills": 4, "qty": 74.0, "discount": 1740.0, "returning": 0}, "CJA1": {"revenue": 108161.0, "bills": 11, "qty": 285.5, "discount": 4489.0, "returning": 7}, "CJA6": {"revenue": 43113.0, "bills": 4, "qty": 54.0, "discount": 2385.0, "returning": 1}, "CJA3": {"revenue": 26603.0, "bills": 6, "qty": 63.0, "discount": 1950.0, "returning": 1}, "CJA5": {"revenue": 49467.0, "bills": 6, "qty": 112.0, "discount": 2970.0, "returning": 0}, "CJA2": {"revenue": 60182.5, "bills": 8, "qty": 128.5, "discount": 4132.5, "returning": 2}}, "2026-06-24": {"_dayTh": "พุธ", "CJA4": {"revenue": 44838.0, "bills": 3, "qty": 23.0, "discount": 495.0, "returning": 3}, "CJA5": {"revenue": 39985.0, "bills": 9, "qty": 90.0, "discount": 2070.0, "returning": 1}, "CJA6": {"revenue": 27100.0, "bills": 7, "qty": 51.0, "discount": 2130.0, "returning": 2}, "CJA3": {"revenue": 32247.0, "bills": 7, "qty": 53.0, "discount": 1575.0, "returning": 2}, "CJA2": {"revenue": 39334.0, "bills": 8, "qty": 55.0, "discount": 2010.0, "returning": 3}, "CJA1": {"revenue": 46631.5, "bills": 10, "qty": 74.5, "discount": 2512.5, "returning": 5}}, "2026-06-25": {"_dayTh": "พฤหัสบดี", "CJA3": {"revenue": 20410.0, "bills": 7, "qty": 35.0, "discount": 1125.0, "returning": 1}, "CJA2": {"revenue": 45239.0, "bills": 10, "qty": 95.0, "discount": 4245.0, "returning": 3}, "CJA1": {"revenue": 78817.0, "bills": 10, "qty": 115.0, "discount": 9063.0, "returning": 8}, "CJA5": {"revenue": 16797.5, "bills": 7, "qty": 39.5, "discount": 1267.5, "returning": 2}, "CJA6": {"revenue": 52490.5, "bills": 7, "qty": 100.5, "discount": 2857.5, "returning": 2}, "CJA4": {"revenue": 675.0, "bills": 2, "qty": 6.0, "discount": 195.0, "returning": 1}}, "2026-06-26": {"_dayTh": "ศุกร์", "CJA1": {"revenue": 125728.0, "bills": 12, "qty": 169.0, "discount": 5580.0, "returning": 4}, "CJA2": {"revenue": 111936.5, "bills": 12, "qty": 187.5, "discount": 6632.5, "returning": 3}, "CJA4": {"revenue": 57838.5, "bills": 4, "qty": 77.5, "discount": 2242.5, "returning": 3}, "CJA5": {"revenue": 64647.0, "bills": 9, "qty": 110.0, "discount": 2651.0, "returning": 4}, "CJA6": {"revenue": 37730.0, "bills": 6, "qty": 78.0, "discount": 2070.0, "returning": 2}, "CJA3": {"revenue": 65190.5, "bills": 11, "qty": 92.0, "discount": 3162.5, "returning": 4}}, "2026-06-27": {"_dayTh": "เสาร์", "CJA2": {"revenue": 69215.0, "bills": 10, "qty": 174.0, "discount": 4950.0, "returning": 3}, "CJA6": {"revenue": 35118.0, "bills": 10, "qty": 90.0, "discount": 2295.0, "returning": 4}, "CJA1": {"revenue": 166258.5, "bills": 11, "qty": 176.5, "discount": 7912.5, "returning": 4}, "CJA5": {"revenue": 90215.0, "bills": 12, "qty": 159.0, "discount": 3405.0, "returning": 5}, "CJA4": {"revenue": 38610.0, "bills": 4, "qty": 55.0, "discount": 2055.0, "returning": 4}, "CJA3": {"revenue": 87954.8, "bills": 9, "qty": 143.0, "discount": 5604.2, "returning": 2}}, "2026-06-29": {"_dayTh": "จันทร์", "CJA6": {"revenue": 21959.5, "bills": 5, "qty": 53.5, "discount": 982.5, "returning": 1}, "CJA2": {"revenue": 28223.0, "bills": 9, "qty": 90.5, "discount": 2329.0, "returning": 4}, "CJA3": {"revenue": 43384.5, "bills": 5, "qty": 53.0, "discount": 1713.5, "returning": 0}, "CJA5": {"revenue": 43359.0, "bills": 7, "qty": 71.0, "discount": 1890.0, "returning": 2}, "CJA1": {"revenue": 88060.1, "bills": 10, "qty": 164.0, "discount": 5071.9, "returning": 7}, "CJA4": {"revenue": 55757.0, "bills": 6, "qty": 81.0, "discount": 2055.0, "returning": 1}}, "2026-06-30": {"_dayTh": "อังคาร", "CJA4": {"revenue": 30011.0, "bills": 3, "qty": 38.0, "discount": 900.0, "returning": 1}, "CJA3": {"revenue": 201039.2, "bills": 11, "qty": 224.0, "discount": 9649.8, "returning": 2}, "CJA5": {"revenue": 85349.0, "bills": 10, "qty": 103.0, "discount": 3480.0, "returning": 2}, "CJA1": {"revenue": 76329.0, "bills": 11, "qty": 148.0, "discount": 4965.0, "returning": 7}, "CJA2": {"revenue": 35063.0, "bills": 6, "qty": 102.0, "discount": 3375.0, "returning": 1}, "CJA6": {"revenue": 26257.0, "bills": 5, "qty": 38.0, "discount": 1185.0, "returning": 3}}, "2026-07-01": {"_dayTh": "พุธ", "CJA4": {"revenue": 10160.0, "bills": 3, "qty": 18.0, "discount": 0.0, "returning": 0}, "CJA1": {"revenue": 93265.0, "bills": 8, "qty": 154.0, "discount": 4365.0, "returning": 6}, "CJA5": {"revenue": 26395.0, "bills": 8, "qty": 51.0, "discount": 675.0, "returning": 3}, "CJA2": {"revenue": 63958.5, "bills": 5, "qty": 82.5, "discount": 2797.5, "returning": 0}, "CJA3": {"revenue": 65113.0, "bills": 7, "qty": 102.5, "discount": 2250.0, "returning": 2}, "CJA6": {"revenue": 41525.0, "bills": 6, "qty": 53.5, "discount": 780.0, "returning": 2}}, "2026-07-02": {"_dayTh": "พฤหัสบดี", "CJA6": {"revenue": 60945.0, "bills": 6, "qty": 109.5, "discount": 1275.0, "returning": 3}, "CJA3": {"revenue": 60682.0, "bills": 7, "qty": 112.0, "discount": 3240.0, "returning": 1}, "CJA2": {"revenue": 35520.0, "bills": 4, "qty": 72.5, "discount": 1305.0, "returning": 1}, "CJA5": {"revenue": 28579.0, "bills": 9, "qty": 76.0, "discount": 900.0, "returning": 5}, "CJA4": {"revenue": 16240.0, "bills": 2, "qty": 18.0, "discount": 260.0, "returning": 1}, "CJA1": {"revenue": 86480.5, "bills": 10, "qty": 180.5, "discount": 4182.5, "returning": 8}}, "2026-07-03": {"_dayTh": "ศุกร์", "CJA6": {"revenue": 22690.0, "bills": 3, "qty": 46.0, "discount": 900.0, "returning": 2}, "CJA1": {"revenue": 94094.0, "bills": 11, "qty": 196.0, "discount": 5025.0, "returning": 7}, "CJA5": {"revenue": 103053.0, "bills": 12, "qty": 218.0, "discount": 2635.0, "returning": 5}, "CJA2": {"revenue": 22769.0, "bills": 8, "qty": 57.5, "discount": 0.0, "returning": 2}, "CJA3": {"revenue": 52882.0, "bills": 7, "qty": 87.0, "discount": 1560.0, "returning": 2}, "CJA4": {"revenue": 11325.0, "bills": 2, "qty": 15.5, "discount": 330.0, "returning": 0}}, "2026-07-04": {"_dayTh": "เสาร์", "CJA2": {"revenue": 81351.0, "bills": 9, "qty": 124.0, "discount": 3325.0, "returning": 1}, "CJA5": {"revenue": 41500.0, "bills": 9, "qty": 109.0, "discount": 1275.0, "returning": 3}, "CJA6": {"revenue": 40756.25, "bills": 9, "qty": 98.0, "discount": 1525.75, "returning": 2}, "CJA4": {"revenue": 39819.0, "bills": 9, "qty": 67.5, "discount": 1015.0, "returning": 3}, "CJA1": {"revenue": 97086.2, "bills": 12, "qty": 181.0, "discount": 3164.8, "returning": 10}, "CJA3": {"revenue": 53775.0, "bills": 6, "qty": 90.5, "discount": 1420.0, "returning": 2}}, "2026-07-06": {"_dayTh": "จันทร์", "CJA5": {"revenue": 30068.0, "bills": 8, "qty": 68.0, "discount": 0.0, "returning": 4}, "CJA1": {"revenue": 71243.0, "bills": 11, "qty": 127.0, "discount": 1925.0, "returning": 4}, "CJA3": {"revenue": 41101.0, "bills": 7, "qty": 79.5, "discount": 900.0, "returning": 4}, "CJA6": {"revenue": 10240.0, "bills": 3, "qty": 21.0, "discount": 0.0, "returning": 2}, "CJA4": {"revenue": 28225.0, "bills": 5, "qty": 56.0, "discount": 780.0, "returning": 1}, "CJA2": {"revenue": 79716.0, "bills": 6, "qty": 113.0, "discount": 3540.0, "returning": 1}}, "2026-07-07": {"_dayTh": "อังคาร", "CJA6": {"revenue": 67595.0, "bills": 4, "qty": 69.5, "discount": 2560.0, "returning": 2}, "CJA1": {"revenue": 26900.0, "bills": 6, "qty": 39.0, "discount": 1400.0, "returning": 4}, "CJA5": {"revenue": 56416.0, "bills": 8, "qty": 104.0, "discount": 880.0, "returning": 2}, "CJA4": {"revenue": 30850.0, "bills": 5, "qty": 42.0, "discount": 1110.0, "returning": 2}, "CJA3": {"revenue": 12280.0, "bills": 3, "qty": 31.0, "discount": 0.0, "returning": 1}, "CJA2": {"revenue": 103173.5, "bills": 10, "qty": 133.0, "discount": 2972.5, "returning": 5}}, "2026-07-08": {"_dayTh": "พุธ", "CJA2": {"revenue": 66545.0, "bills": 9, "qty": 116.5, "discount": 2760.0, "returning": 4}, "CJA3": {"revenue": 23099.0, "bills": 8, "qty": 43.0, "discount": 450.0, "returning": 3}, "CJA4": {"revenue": 27116.0, "bills": 4, "qty": 29.5, "discount": 1050.0, "returning": 3}, "CJA6": {"revenue": 17353.0, "bills": 6, "qty": 29.0, "discount": 260.0, "returning": 1}, "CJA1": {"revenue": 175456.4, "bills": 11, "qty": 236.0, "discount": 9265.6, "returning": 8}, "CJA5": {"revenue": 20123.0, "bills": 6, "qty": 44.0, "discount": 514.0, "returning": 1}}, "2026-07-09": {"_dayTh": "พฤหัสบดี", "CJA4": {"revenue": 24829.0, "bills": 4, "qty": 50.0, "discount": 675.0, "returning": 1}, "CJA2": {"revenue": 45438.0, "bills": 11, "qty": 85.0, "discount": 1304.0, "returning": 3}, "CJA6": {"revenue": 32374.0, "bills": 7, "qty": 66.0, "discount": 880.0, "returning": 2}, "CJA3": {"revenue": 88451.0, "bills": 7, "qty": 72.0, "discount": 900.0, "returning": 4}, "CJA1": {"revenue": 30880.0, "bills": 7, "qty": 76.0, "discount": 2078.0, "returning": 3}, "CJA5": {"revenue": 1200.0, "bills": 3, "qty": 7.0, "discount": 0.0, "returning": 2}}, "2026-07-10": {"_dayTh": "ศุกร์", "CJA5": {"revenue": 30584.0, "bills": 5, "qty": 52.0, "discount": 1120.0, "returning": 1}, "CJA2": {"revenue": 118782.0, "bills": 11, "qty": 187.5, "discount": 9731.0, "returning": 4}, "CJA4": {"revenue": 48250.0, "bills": 4, "qty": 73.0, "discount": 3910.0, "returning": 0}, "CJA1": {"revenue": 137521.0, "bills": 10, "qty": 172.5, "discount": 6670.0, "returning": 6}, "CJA6": {"revenue": 30181.0, "bills": 5, "qty": 87.0, "discount": 600.0, "returning": 3}, "CJA3": {"revenue": 103103.0, "bills": 7, "qty": 143.0, "discount": 1380.0, "returning": 3}}, "2026-07-11": {"_dayTh": "เสาร์", "CJA1": {"revenue": 89227.0, "bills": 13, "qty": 128.0, "discount": 4130.0, "returning": 7}, "CJA3": {"revenue": 87520.0, "bills": 14, "qty": 135.5, "discount": 2056.0, "returning": 4}, "CJA6": {"revenue": 35277.0, "bills": 7, "qty": 83.0, "discount": 880.0, "returning": 3}, "CJA4": {"revenue": 79440.0, "bills": 7, "qty": 97.0, "discount": 1690.0, "returning": 2}, "CJA5": {"revenue": 69509.0, "bills": 10, "qty": 158.0, "discount": 1876.0, "returning": 5}, "CJA2": {"revenue": 152160.0, "bills": 12, "qty": 197.5, "discount": 5700.0, "returning": 2}}, "2026-07-13": {"_dayTh": "จันทร์", "CJA1": {"revenue": 70646.0, "bills": 7, "qty": 135.0, "discount": 2510.0, "returning": 4}, "CJA3": {"revenue": 68316.0, "bills": 7, "qty": 104.5, "discount": 3144.0, "returning": 3}, "CJA2": {"revenue": 64880.0, "bills": 7, "qty": 107.5, "discount": 2155.0, "returning": 2}, "CJA5": {"revenue": 29389.0, "bills": 6, "qty": 84.0, "discount": 600.0, "returning": 2}, "CJA4": {"revenue": 14592.0, "bills": 4, "qty": 27.5, "discount": 2290.0, "returning": 2}, "CJA6": {"revenue": 46343.0, "bills": 6, "qty": 124.0, "discount": 1040.0, "returning": 4}}, "2026-07-14": {"_dayTh": "อังคาร", "CJA5": {"revenue": 30040.0, "bills": 8, "qty": 58.0, "discount": 1200.0, "returning": 3}, "CJA1": {"revenue": 31182.0, "bills": 10, "qty": 56.5, "discount": 210.0, "returning": 5}, "CJA2": {"revenue": 79456.0, "bills": 8, "qty": 109.0, "discount": 3550.0, "returning": 2}, "CJA4": {"revenue": 26797.4, "bills": 6, "qty": 63.0, "discount": 1863.6, "returning": 2}, "CJA6": {"revenue": 30667.0, "bills": 7, "qty": 57.0, "discount": 525.0, "returning": 4}}, "2026-07-15": {"_dayTh": "พุธ", "CJA5": {"revenue": 74196.2, "bills": 9, "qty": 149.0, "discount": 1658.8, "returning": 2}, "CJA1": {"revenue": 84752.2, "bills": 12, "qty": 287.5, "discount": 3948.8, "returning": 7}, "CJA6": {"revenue": 56174.0, "bills": 6, "qty": 90.5, "discount": 1610.0, "returning": 1}, "CJA2": {"revenue": 51582.0, "bills": 10, "qty": 114.5, "discount": 3145.0, "returning": 3}, "CJA4": {"revenue": 41200.0, "bills": 4, "qty": 72.0, "discount": 1290.0, "returning": 0}, "CJA3": {"revenue": 126596.0, "bills": 9, "qty": 207.0, "discount": 5210.0, "returning": 3}}, "2026-07-16": {"_dayTh": "พฤหัสบดี", "CJA3": {"revenue": 42460.0, "bills": 3, "qty": 60.0, "discount": 1800.0, "returning": 1}, "CJA1": {"revenue": 65552.8, "bills": 11, "qty": 116.5, "discount": 3824.2, "returning": 5}, "CJA4": {"revenue": 58202.0, "bills": 6, "qty": 71.0, "discount": 1120.0, "returning": 5}, "CJA2": {"revenue": 79098.0, "bills": 9, "qty": 114.5, "discount": 2155.0, "returning": 1}, "CJA6": {"revenue": 56314.8, "bills": 5, "qty": 69.0, "discount": 1390.0, "returning": 2}, "CJA5": {"revenue": 15042.0, "bills": 4, "qty": 21.0, "discount": 300.0, "returning": 1}}, "2026-07-17": {"_dayTh": "ศุกร์", "CJA3": {"revenue": 8495.0, "bills": 2, "qty": 21.0, "discount": 0.0, "returning": 1}, "CJA1": {"revenue": 59834.0, "bills": 8, "qty": 88.5, "discount": 10000.0, "returning": 4}, "CJA6": {"revenue": 55515.0, "bills": 6, "qty": 66.0, "discount": 2100.0, "returning": 3}, "CJA5": {"revenue": 41796.0, "bills": 6, "qty": 89.0, "discount": 1320.0, "returning": 2}, "CJA2": {"revenue": 85040.0, "bills": 10, "qty": 134.0, "discount": 3070.0, "returning": 4}, "CJA4": {"revenue": 25287.0, "bills": 2, "qty": 40.0, "discount": 840.0, "returning": 2}}, "2026-07-18": {"_dayTh": "เสาร์", "CJA2": {"revenue": 111963.0, "bills": 11, "qty": 204.5, "discount": 3700.0, "returning": 3}, "CJA1": {"revenue": 138957.0, "bills": 14, "qty": 202.0, "discount": 8470.0, "returning": 5}, "CJA5": {"revenue": 42410.0, "bills": 8, "qty": 79.0, "discount": 700.0, "returning": 2}, "CJA6": {"revenue": 15401.0, "bills": 6, "qty": 31.0, "discount": 440.0, "returning": 3}, "CJA3": {"revenue": 114239.0, "bills": 9, "qty": 165.0, "discount": 3490.0, "returning": 3}, "CJA4": {"revenue": 71826.0, "bills": 5, "qty": 117.0, "discount": 2350.0, "returning": 0}}, "2026-07-20": {"_dayTh": "จันทร์", "CJA1": {"revenue": 74737.5, "bills": 7, "qty": 129.5, "discount": 5237.5, "returning": 4}, "CJA6": {"revenue": 2465.0, "bills": 6, "qty": 32.5, "discount": 0.0, "returning": 2}, "CJA4": {"revenue": 8874.0, "bills": 3, "qty": 23.0, "discount": 0.0, "returning": 1}, "CJA2": {"revenue": 69952.0, "bills": 11, "qty": 115.0, "discount": 1820.0, "returning": 2}, "CJA3": {"revenue": 35648.0, "bills": 7, "qty": 79.5, "discount": 825.0, "returning": 2}, "CJA5": {"revenue": 31210.0, "bills": 3, "qty": 48.0, "discount": 1200.0, "returning": 1}}, "2026-07-21": {"_dayTh": "อังคาร", "CJA4": {"revenue": 20194.0, "bills": 1, "qty": 22.0, "discount": 780.0, "returning": 1}, "CJA2": {"revenue": 13304.0, "bills": 5, "qty": 49.5, "discount": 70.0, "returning": 2}, "CJA1": {"revenue": 50987.0, "bills": 9, "qty": 114.5, "discount": 4650.0, "returning": 7}, "CJA3": {"revenue": 27904.0, "bills": 6, "qty": 52.5, "discount": 450.0, "returning": 3}, "CJA6": {"revenue": 37730.0, "bills": 6, "qty": 68.0, "discount": 910.0, "returning": 4}, "CJA5": {"revenue": 21460.0, "bills": 4, "qty": 41.0, "discount": 960.0, "returning": 2}}, "2026-07-22": {"_dayTh": "พุธ", "CJA4": {"revenue": 30792.0, "bills": 5, "qty": 47.0, "discount": 0.0, "returning": 4}, "CJA2": {"revenue": 99021.0, "bills": 11, "qty": 123.5, "discount": 7207.0, "returning": 3}, "CJA3": {"revenue": 55033.5, "bills": 6, "qty": 77.0, "discount": 1890.5, "returning": 1}, "CJA1": {"revenue": 101419.0, "bills": 10, "qty": 155.0, "discount": 3669.0, "returning": 8}, "CJA5": {"revenue": 46332.0, "bills": 7, "qty": 109.0, "discount": 1120.0, "returning": 4}, "CJA6": {"revenue": 19010.0, "bills": 6, "qty": 59.0, "discount": 0.0, "returning": 2}}, "2026-07-23": {"_dayTh": "พฤหัสบดี", "CJA2": {"revenue": 55677.0, "bills": 9, "qty": 81.5, "discount": 1445.0, "returning": 5}, "CJA3": {"revenue": 20344.0, "bills": 5, "qty": 39.0, "discount": 0.0, "returning": 3}, "CJA5": {"revenue": 3680.0, "bills": 5, "qty": 16.0, "discount": 0.0, "returning": 0}, "CJA1": {"revenue": 100695.5, "bills": 11, "qty": 147.5, "discount": 2780.5, "returning": 6}, "CJA6": {"revenue": 22448.0, "bills": 4, "qty": 49.0, "discount": 600.0, "returning": 3}, "CJA4": {"revenue": 52435.0, "bills": 9, "qty": 84.7, "discount": 1350.0, "returning": 2}}, "2026-07-24": {"_dayTh": "ศุกร์", "CJA2": {"revenue": 127176.0, "bills": 12, "qty": 256.0, "discount": 3320.0, "returning": 5}, "CJA1": {"revenue": 53755.0, "bills": 9, "qty": 62.5, "discount": 840.0, "returning": 5}, "CJA3": {"revenue": 44762.0, "bills": 5, "qty": 66.5, "discount": 2775.0, "returning": 3}, "CJA5": {"revenue": 34214.0, "bills": 5, "qty": 75.5, "discount": 635.0, "returning": 2}, "CJA4": {"revenue": 32903.0, "bills": 2, "qty": 38.0, "discount": 1040.0, "returning": 0}, "CJA6": {"revenue": 28760.5, "bills": 3, "qty": 57.0, "discount": 1391.5, "returning": 2}}, "2026-07-25": {"_dayTh": "เสาร์", "CJA1": {"revenue": 171843.0, "bills": 13, "qty": 210.5, "discount": 5718.0, "returning": 5}, "CJA5": {"revenue": 121762.0, "bills": 10, "qty": 149.0, "discount": 2491.0, "returning": 5}, "CJA2": {"revenue": 77771.0, "bills": 13, "qty": 116.5, "discount": 2520.0, "returning": 4}, "CJA6": {"revenue": 79275.0, "bills": 9, "qty": 128.0, "discount": 1950.0, "returning": 3}, "CJA4": {"revenue": 57889.0, "bills": 5, "qty": 84.0, "discount": 1720.0, "returning": 0}, "CJA3": {"revenue": 79476.0, "bills": 10, "qty": 124.0, "discount": 5544.0, "returning": 5}}, "2026-07-27": {"_dayTh": "จันทร์", "CJA6": {"revenue": 56526.0, "bills": 10, "qty": 96.5, "discount": 1370.0, "returning": 4}, "CJA3": {"revenue": 45750.0, "bills": 8, "qty": 71.0, "discount": 1560.0, "returning": 0}, "CJA5": {"revenue": 12950.0, "bills": 5, "qty": 33.0, "discount": 0.0, "returning": 0}, "CJA2": {"revenue": 73438.0, "bills": 10, "qty": 139.0, "discount": 2170.0, "returning": 3}, "CJA4": {"revenue": 41529.0, "bills": 4, "qty": 60.5, "discount": 1565.0, "returning": 0}, "CJA1": {"revenue": 83749.0, "bills": 15, "qty": 148.5, "discount": 2940.0, "returning": 7}}, "2026-07-29": {"_dayTh": "พุธ", "CJA2": {"revenue": 144600.0, "bills": 13, "qty": 238.5, "discount": 4615.0, "returning": 4}, "CJA3": {"revenue": 22554.0, "bills": 4, "qty": 54.5, "discount": 880.0, "returning": 0}, "CJA6": {"revenue": 49672.0, "bills": 8, "qty": 93.0, "discount": 1790.0, "returning": 1}, "CJA5": {"revenue": 13260.0, "bills": 4, "qty": 29.0, "discount": 600.0, "returning": 0}, "CJA1": {"revenue": 99159.0, "bills": 12, "qty": 171.5, "discount": 4210.0, "returning": 5}, "CJA4": {"revenue": 41890.0, "bills": 7, "qty": 94.0, "discount": 520.0, "returning": 0}}, "2026-07-30": {"_dayTh": "พฤหัสบดี", "CJA1": {"revenue": 75927.0, "bills": 8, "qty": 122.5, "discount": 3158.0, "returning": 2}, "CJA5": {"revenue": 36252.0, "bills": 9, "qty": 99.0, "discount": 520.0, "returning": 3}, "CJA3": {"revenue": 51403.0, "bills": 7, "qty": 73.0, "discount": 1354.0, "returning": 2}, "CJA6": {"revenue": 53490.0, "bills": 6, "qty": 67.0, "discount": 1500.0, "returning": 3}, "CJA2": {"revenue": 97952.0, "bills": 8, "qty": 148.5, "discount": 3035.0, "returning": 2}, "CJA4": {"revenue": 42808.0, "bills": 5, "qty": 74.0, "discount": 520.0, "returning": 3}}, "2026-07-31": {"_dayTh": "ศุกร์", "CJA2": {"revenue": 75744.0, "bills": 11, "qty": 155.0, "discount": 2635.0, "returning": 4}, "CJA1": {"revenue": 120940.9, "bills": 13, "qty": 198.5, "discount": 6874.1, "returning": 6}, "CJA6": {"revenue": 14980.0, "bills": 2, "qty": 35.0, "discount": 440.0, "returning": 1}, "CJA5": {"revenue": 35062.0, "bills": 7, "qty": 76.0, "discount": 890.0, "returning": 3}, "CJA4": {"revenue": 18350.0, "bills": 2, "qty": 23.0, "discount": 0.0, "returning": 1}, "CJA3": {"revenue": 44955.0, "bills": 6, "qty": 80.5, "discount": 1630.0, "returning": 3}}, "2026-08-01": {"_dayTh": "เสาร์", "CJA3": {"revenue": 77778.0, "bills": 8, "qty": 134.0, "discount": 1490.0, "returning": 3}, "CJA2": {"revenue": 79850.0, "bills": 12, "qty": 170.5, "discount": 1510.0, "returning": 1}, "CJA4": {"revenue": 21210.0, "bills": 2, "qty": 44.0, "discount": 440.0, "returning": 0}, "CJA6": {"revenue": 29760.0, "bills": 7, "qty": 72.0, "discount": 455.0, "returning": 0}, "CJA5": {"revenue": 77075.0, "bills": 6, "qty": 131.0, "discount": 1040.0, "returning": 2}, "CJA1": {"revenue": 117941.0, "bills": 13, "qty": 222.5, "discount": 5495.0, "returning": 7}}}, "monthly": {"2026-06": {"CJA6": {"revenue": 902345.5, "bills": 144, "qty": 1644.0, "discount": 46853.5, "returning": 52}, "CJA4": {"revenue": 825603.0, "bills": 96, "qty": 1115.0, "discount": 33990.0, "returning": 49}, "CJA3": {"revenue": 1381391.6, "bills": 196, "qty": 2272.5, "discount": 94636.4, "returning": 48}, "CJA2": {"revenue": 1892833.8, "bills": 252, "qty": 3343.0, "discount": 111872.5, "returning": 74}, "CJA1": {"revenue": 2236507.0, "bills": 261, "qty": 3686.5, "discount": 135593.0, "returning": 141}, "CJA5": {"revenue": 1013874.0, "bills": 206, "qty": 2114.0, "discount": 52361.0, "returning": 70}}, "2026-07": {"CJA4": {"revenue": 901822.4, "bills": 115, "qty": 1407.2, "discount": 28068.6, "returning": 36}, "CJA1": {"revenue": 2286290.0, "bills": 268, "qty": 3836.5, "discount": 111246.0, "returning": 148}, "CJA5": {"revenue": 996482.2, "bills": 178, "qty": 2042.5, "discount": 24069.8, "returning": 63}, "CJA2": {"revenue": 2076067.0, "bills": 243, "qty": 3376.0, "discount": 80047.0, "returning": 72}, "CJA3": {"revenue": 1375941.5, "bills": 167, "qty": 2171.0, "discount": 44708.5, "returning": 59}, "CJA6": {"revenue": 983707.55, "bills": 152, "qty": 1785.0, "discount": 26717.25, "returning": 64}}, "2026-08": {"CJA3": {"revenue": 77778.0, "bills": 8, "qty": 134.0, "discount": 1490.0, "returning": 3}, "CJA2": {"revenue": 79850.0, "bills": 12, "qty": 170.5, "discount": 1510.0, "returning": 1}, "CJA4": {"revenue": 21210.0, "bills": 2, "qty": 44.0, "discount": 440.0, "returning": 0}, "CJA6": {"revenue": 29760.0, "bills": 7, "qty": 72.0, "discount": 455.0, "returning": 0}, "CJA5": {"revenue": 77075.0, "bills": 6, "qty": 131.0, "discount": 1040.0, "returning": 2}, "CJA1": {"revenue": 117941.0, "bills": 13, "qty": 222.5, "discount": 5495.0, "returning": 7}}}, "groupMonth": {"2026-06": [{"name": "ลูกค้าเก่า", "revenue": 3317673.4, "count": 434, "items": [{"name": "ลูกค้าเก่า", "revenue": 3146126.0, "count": 409}, {"name": "ลูกค้าเครดิต", "revenue": 171547.4, "count": 25}]}, {"name": "Offline", "revenue": 3044751.9, "count": 427, "items": [{"name": "ขับผ่าน", "revenue": 1532739.8, "count": 227}, {"name": "เพื่อนแนะนำ", "revenue": 1101421.6, "count": 132}, {"name": "ลูกค้าบริเวณใกล้เคียง", "revenue": 353987.5, "count": 46}, {"name": "หน้าร้าน", "revenue": 56603.0, "count": 22}]}, {"name": "Online", "revenue": 1629580.5, "count": 236, "items": [{"name": "Facebook", "revenue": 978102.0, "count": 144}, {"name": "Line @", "revenue": 315497.0, "count": 42}, {"name": "GOOGLE", "revenue": 310471.5, "count": 47}, {"name": "TikTok", "revenue": 23520.0, "count": 2}, {"name": "กลุ่มลูกค้า CLUBCAR", "revenue": 1990.0, "count": 1}]}, {"name": "ไม่ระบุ", "revenue": 204457.8, "count": 43, "items": [{"name": "ไม่ระบุที่มา", "revenue": 204457.8, "count": 43}]}, {"name": "ลูกค้าองค์กร", "revenue": 56091.3, "count": 15, "items": [{"name": "รถของบริษัทในเครือ", "revenue": 46841.3, "count": 13}, {"name": "รถของกลุ่มผู้บริหาร", "revenue": 9250.0, "count": 2}]}], "2026-07": [{"name": "ลูกค้าเก่า", "revenue": 3514146.15, "count": 442, "items": [{"name": "ลูกค้าเก่า", "revenue": 3287195.65, "count": 420}, {"name": "ลูกค้าเครดิต", "revenue": 226950.5, "count": 22}]}, {"name": "Offline", "revenue": 3479242.8, "count": 456, "items": [{"name": "ขับผ่าน", "revenue": 1578946.5, "count": 203}, {"name": "เพื่อนแนะนำ", "revenue": 1402005.7, "count": 155}, {"name": "ลูกค้าบริเวณใกล้เคียง", "revenue": 418575.4, "count": 61}, {"name": "หน้าร้าน", "revenue": 79715.2, "count": 37}]}, {"name": "Online", "revenue": 1351756.5, "count": 175, "items": [{"name": "Facebook", "revenue": 856243.5, "count": 107}, {"name": "Line @", "revenue": 268610.0, "count": 28}, {"name": "GOOGLE", "revenue": 187843.0, "count": 33}, {"name": "Instagram", "revenue": 24050.0, "count": 1}, {"name": "YouTube", "revenue": 12510.0, "count": 1}, {"name": "TikTok", "revenue": 2500.0, "count": 3}, {"name": "Influencer/รีวิว", "revenue": 0.0, "count": 2}]}, {"name": "ไม่ระบุ", "revenue": 258564.2, "count": 46, "items": [{"name": "ไม่ระบุที่มา", "revenue": 258564.2, "count": 46}]}, {"name": "ลูกค้าองค์กร", "revenue": 16601.0, "count": 4, "items": [{"name": "พนักงาน CJA และพนักงานบริษัทในเครือ", "revenue": 9801.0, "count": 3}, {"name": "รถของบริษัทในเครือ", "revenue": 6800.0, "count": 1}]}], "2026-08": [{"name": "ลูกค้าเก่า", "revenue": 138042.0, "count": 13, "items": [{"name": "ลูกค้าเก่า", "revenue": 135504.0, "count": 12}, {"name": "ลูกค้าเครดิต", "revenue": 2538.0, "count": 1}]}, {"name": "Offline", "revenue": 133702.0, "count": 20, "items": [{"name": "ขับผ่าน", "revenue": 73924.0, "count": 10}, {"name": "เพื่อนแนะนำ", "revenue": 30260.0, "count": 5}, {"name": "ลูกค้าบริเวณใกล้เคียง", "revenue": 29518.0, "count": 5}]}, {"name": "Online", "revenue": 124882.0, "count": 14, "items": [{"name": "Facebook", "revenue": 47541.0, "count": 9}, {"name": "GOOGLE", "revenue": 39591.0, "count": 2}, {"name": "Line @", "revenue": 37750.0, "count": 3}]}, {"name": "ไม่ระบุ", "revenue": 6988.0, "count": 1, "items": [{"name": "ไม่ระบุที่มา", "revenue": 6988.0, "count": 1}]}]}, "sourceMonth": {"2026-06": [{"name": "ลูกค้าเก่า", "revenue": 3146126.0, "count": 409}, {"name": "ขับผ่าน", "revenue": 1532739.8, "count": 227}, {"name": "เพื่อนแนะนำ", "revenue": 1101421.6, "count": 132}, {"name": "Facebook", "revenue": 978102.0, "count": 144}, {"name": "ลูกค้าบริเวณใกล้เคียง", "revenue": 353987.5, "count": 46}, {"name": "Line @", "revenue": 315497.0, "count": 42}, {"name": "GOOGLE", "revenue": 310471.5, "count": 47}, {"name": "ไม่ระบุที่มา", "revenue": 204457.8, "count": 43}, {"name": "ลูกค้าเครดิต", "revenue": 171547.4, "count": 25}, {"name": "หน้าร้าน", "revenue": 56603.0, "count": 22}, {"name": "รถของบริษัทในเครือ", "revenue": 46841.3, "count": 13}, {"name": "TikTok", "revenue": 23520.0, "count": 2}, {"name": "รถของกลุ่มผู้บริหาร", "revenue": 9250.0, "count": 2}, {"name": "กลุ่มลูกค้า CLUBCAR", "revenue": 1990.0, "count": 1}], "2026-07": [{"name": "ลูกค้าเก่า", "revenue": 3287195.65, "count": 420}, {"name": "ขับผ่าน", "revenue": 1578946.5, "count": 203}, {"name": "เพื่อนแนะนำ", "revenue": 1402005.7, "count": 155}, {"name": "Facebook", "revenue": 856243.5, "count": 107}, {"name": "ลูกค้าบริเวณใกล้เคียง", "revenue": 418575.4, "count": 61}, {"name": "Line @", "revenue": 268610.0, "count": 28}, {"name": "ไม่ระบุที่มา", "revenue": 258564.2, "count": 46}, {"name": "ลูกค้าเครดิต", "revenue": 226950.5, "count": 22}, {"name": "GOOGLE", "revenue": 187843.0, "count": 33}, {"name": "หน้าร้าน", "revenue": 79715.2, "count": 37}, {"name": "Instagram", "revenue": 24050.0, "count": 1}, {"name": "YouTube", "revenue": 12510.0, "count": 1}, {"name": "พนักงาน CJA และพนักงานบริษัทในเครือ", "revenue": 9801.0, "count": 3}, {"name": "รถของบริษัทในเครือ", "revenue": 6800.0, "count": 1}, {"name": "TikTok", "revenue": 2500.0, "count": 3}, {"name": "Influencer/รีวิว", "revenue": 0.0, "count": 2}], "2026-08": [{"name": "ลูกค้าเก่า", "revenue": 135504.0, "count": 12}, {"name": "ขับผ่าน", "revenue": 73924.0, "count": 10}, {"name": "Facebook", "revenue": 47541.0, "count": 9}, {"name": "GOOGLE", "revenue": 39591.0, "count": 2}, {"name": "Line @", "revenue": 37750.0, "count": 3}, {"name": "เพื่อนแนะนำ", "revenue": 30260.0, "count": 5}, {"name": "ลูกค้าบริเวณใกล้เคียง", "revenue": 29518.0, "count": 5}, {"name": "ไม่ระบุที่มา", "revenue": 6988.0, "count": 1}, {"name": "ลูกค้าเครดิต", "revenue": 2538.0, "count": 1}]}, "sourceTypeMonth": {"2026-06": [{"name": "Offline", "revenue": 6648484.4, "count": 922, "items": [{"name": "ลูกค้าเก่า", "revenue": 3146126.0, "count": 409}, {"name": "ขับผ่าน", "revenue": 1532739.8, "count": 227}, {"name": "เพื่อนแนะนำ", "revenue": 1101421.6, "count": 132}, {"name": "ลูกค้าบริเวณใกล้เคียง", "revenue": 353987.5, "count": 46}, {"name": "ไม่ระบุที่มา", "revenue": 204457.8, "count": 43}, {"name": "ลูกค้าเครดิต", "revenue": 171547.4, "count": 25}, {"name": "หน้าร้าน", "revenue": 56603.0, "count": 22}, {"name": "รถของบริษัทในเครือ", "revenue": 46841.3, "count": 13}, {"name": "TikTok", "revenue": 23520.0, "count": 2}, {"name": "รถของกลุ่มผู้บริหาร", "revenue": 9250.0, "count": 2}, {"name": "กลุ่มลูกค้า CLUBCAR", "revenue": 1990.0, "count": 1}]}, {"name": "Online", "revenue": 1604070.5, "count": 233, "items": [{"name": "Facebook", "revenue": 978102.0, "count": 144}, {"name": "Line @", "revenue": 315497.0, "count": 42}, {"name": "GOOGLE", "revenue": 310471.5, "count": 47}]}], "2026-07": [{"name": "Offline", "revenue": 7307614.15, "count": 955, "items": [{"name": "ลูกค้าเก่า", "revenue": 3287195.65, "count": 420}, {"name": "ขับผ่าน", "revenue": 1578946.5, "count": 203}, {"name": "เพื่อนแนะนำ", "revenue": 1402005.7, "count": 155}, {"name": "ลูกค้าบริเวณใกล้เคียง", "revenue": 418575.4, "count": 61}, {"name": "ไม่ระบุที่มา", "revenue": 258564.2, "count": 46}, {"name": "ลูกค้าเครดิต", "revenue": 226950.5, "count": 22}, {"name": "หน้าร้าน", "revenue": 79715.2, "count": 37}, {"name": "Instagram", "revenue": 24050.0, "count": 1}, {"name": "YouTube", "revenue": 12510.0, "count": 1}, {"name": "พนักงาน CJA และพนักงานบริษัทในเครือ", "revenue": 9801.0, "count": 3}, {"name": "รถของบริษัทในเครือ", "revenue": 6800.0, "count": 1}, {"name": "TikTok", "revenue": 2500.0, "count": 3}, {"name": "Influencer/รีวิว", "revenue": 0.0, "count": 2}]}, {"name": "Online", "revenue": 1312696.5, "count": 168, "items": [{"name": "Facebook", "revenue": 856243.5, "count": 107}, {"name": "Line @", "revenue": 268610.0, "count": 28}, {"name": "GOOGLE", "revenue": 187843.0, "count": 33}]}], "2026-08": [{"name": "Offline", "revenue": 278732.0, "count": 34, "items": [{"name": "ลูกค้าเก่า", "revenue": 135504.0, "count": 12}, {"name": "ขับผ่าน", "revenue": 73924.0, "count": 10}, {"name": "เพื่อนแนะนำ", "revenue": 30260.0, "count": 5}, {"name": "ลูกค้าบริเวณใกล้เคียง", "revenue": 29518.0, "count": 5}, {"name": "ไม่ระบุที่มา", "revenue": 6988.0, "count": 1}, {"name": "ลูกค้าเครดิต", "revenue": 2538.0, "count": 1}]}, {"name": "Online", "revenue": 124882.0, "count": 14, "items": [{"name": "Facebook", "revenue": 47541.0, "count": 9}, {"name": "GOOGLE", "revenue": 39591.0, "count": 2}, {"name": "Line @", "revenue": 37750.0, "count": 3}]}]}, "brandMonth": {"2026-06": [{"name": "Toyota", "revenue": 3041439.8, "count": 398}, {"name": "Honda", "revenue": 1458729.4, "count": 223}, {"name": "Nissan", "revenue": 602658.5, "count": 75}, {"name": "Mazda", "revenue": 572736.0, "count": 84}, {"name": "Benz", "revenue": 429122.5, "count": 34}, {"name": "Mitsubishi", "revenue": 297774.5, "count": 49}, {"name": "Ford", "revenue": 292246.5, "count": 37}, {"name": "BMW", "revenue": 275027.5, "count": 22}], "2026-07": [{"name": "Toyota", "revenue": 2804071.8, "count": 358}, {"name": "Honda", "revenue": 2052774.0, "count": 249}, {"name": "Mazda", "revenue": 798337.75, "count": 73}, {"name": "Nissan", "revenue": 597346.7, "count": 74}, {"name": "Mitsubishi", "revenue": 314757.0, "count": 52}, {"name": "BMW", "revenue": 296220.0, "count": 24}, {"name": "Benz", "revenue": 289002.0, "count": 34}, {"name": "Isuzu (SV)", "revenue": 222747.7, "count": 28}], "2026-08": [{"name": "Honda", "revenue": 213837.0, "count": 17}, {"name": "Toyota", "revenue": 101709.0, "count": 12}, {"name": "LX", "revenue": 40489.0, "count": 3}, {"name": "BMW", "revenue": 13750.0, "count": 2}, {"name": "IS", "revenue": 13028.0, "count": 3}, {"name": "Isuzu (SV)", "revenue": 9526.0, "count": 2}, {"name": "Nissan", "revenue": 3980.0, "count": 3}, {"name": "SB", "revenue": 3945.0, "count": 1}]}, "totalRevenue": 17276479.55, "totalBills": 2326}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+let DATA = JSON.parse(document.getElementById('raw-data').textContent);
+let branches = DATA.branches;
+let dates = DATA.dates;
+let months = DATA.months;
+const fmt = n => "฿" + Math.round(n).toLocaleString("th-TH");
+const fmtNum = n => Math.round(n).toLocaleString("th-TH");
+
+let TARGETS = { overall: 0, branches: {} };
+try{
+  const saved = JSON.parse(localStorage.getItem('cjTargets') || 'null');
+  if(saved) TARGETS = saved;
+}catch(e){ /* ignore corrupt storage */ }
+
+function populateTargetInputs(){
+  const overallInput = document.getElementById('targetOverallInput');
+  if(overallInput) overallInput.value = TARGETS.overall || '';
+  const wrap = document.getElementById('targetBranchInputs');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  branches.forEach(b=>{
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
+    row.innerHTML = `<span style="color:rgba(255,255,255,.85);font-size:12px;min-width:90px;">เป้า ${b}</span>
+      <input type="number" min="0" placeholder="เช่น 68000" data-branch="${b}" class="targetBranchInput"
+        style="width:140px;padding:6px 9px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:#fff;color:#1c2b3a;font-size:12.5px;">`;
+    wrap.appendChild(row);
+    row.querySelector('input').value = (TARGETS.branches && TARGETS.branches[b]) || '';
+  });
+}
+
+function saveTargets(){
+  const overallVal = parseFloat(document.getElementById('targetOverallInput').value) || 0;
+  const branchTargets = {};
+  document.querySelectorAll('.targetBranchInput').forEach(inp=>{
+    const v = parseFloat(inp.value) || 0;
+    if(v > 0) branchTargets[inp.dataset.branch] = v;
+  });
+  TARGETS = { overall: overallVal, branches: branchTargets };
+  localStorage.setItem('cjTargets', JSON.stringify(TARGETS));
+  const statusEl = document.getElementById('targetStatus');
+  if(statusEl){ statusEl.classList.remove('err'); statusEl.textContent = '✅ บันทึกเป้าหมายแล้ว'; }
+  render();
+}
+
+const monthNamesTh = {"01":"มกราคม","02":"กุมภาพันธ์","03":"มีนาคม","04":"เมษายน","05":"พฤษภาคม","06":"มิถุนายน","07":"กรกฎาคม","08":"สิงหาคม","09":"กันยายน","10":"ตุลาคม","11":"พฤศจิกายน","12":"ธันวาคม"};
+function thMonthLabel(m){ const [y,mm]=m.split('-'); return monthNamesTh[mm] + " " + (parseInt(y)+543); }
+function thDateLabel(d){ const [y,mm,dd]=d.split('-'); return "วัน" + DATA.daily[d]._dayTh + "ที่ " + parseInt(dd) + " " + monthNamesTh[mm] + " " + (parseInt(y)+543); }
+
+let currentPeriod = "daily";
+let currentDate = dates[dates.length-1];
+let currentMonth = months[months.length-1];
+let weeks = [];
+let WEEKS = {};
+let currentWeek = null;
+
+// ---------- weekly aggregation (Mon–Sun) ----------
+function weekStartOf(dateStr){
+  const [y,m,d] = dateStr.split('-').map(Number);
+  const weekNum = Math.ceil(d/7);
+  const repDay = (weekNum-1)*7 + 1;
+  return y+'-'+pad2(m)+'-'+pad2(repDay);
+}
+function shortDateTh(d){ const [y,mm,dd]=d.split('-'); return parseInt(dd)+" "+monthNamesTh[mm].slice(0,3)+" "+(parseInt(y)+543); }
+function weekNumberInMonth(w){
+  const [,, d] = w.split('-').map(Number);
+  return Math.floor((d-1)/7)+1;
+}
+function thWeekLabel(w){
+  const wk = WEEKS[w];
+  const [y,mm] = w.split('-');
+  const weekNum = weekNumberInMonth(w);
+  const monthShort = monthNamesTh[mm].slice(0,3);
+  const yearTh = parseInt(y)+543;
+  return "สัปดาห์ที่ " + weekNum + " (" + monthShort + " " + yearTh + ")" + (wk ? " · " + wk.days.length + " วัน" : "");
+}
+function buildWeeks(){
+  WEEKS = {}; weeks = [];
+  const FIELDS = ['revenue','bills','discount','returning'];
+  dates.forEach(d=>{
+    const k = weekStartOf(d);
+    if(!WEEKS[k]){ WEEKS[k] = { days: [], rec: {} }; weeks.push(k); }
+    const wk = WEEKS[k];
+    wk.days.push(d);
+    const rec = DATA.daily[d] || {};
+    branches.forEach(b=>{
+      if(!rec[b]) return;
+      const t = wk.rec[b] || (wk.rec[b] = {revenue:0,bills:0,discount:0,returning:0});
+      FIELDS.forEach(f=> t[f] += (rec[b][f]||0));
+    });
+  });
+  weeks.sort();
+  if(!currentWeek || !WEEKS[currentWeek]) currentWeek = weeks[weeks.length-1];
+}
+function weekDayCount(w){ return WEEKS[w] ? WEEKS[w].days.length : 0; }
+
+// populate selects
+const dateSelect = document.getElementById('dateSelect');
+const weekSelect = document.getElementById('weekSelect');
+const monthSelect = document.getElementById('monthSelect');
+const channelMonthSelect = document.getElementById('channelMonthSelect');
+const uploadStatusEl = document.getElementById('uploadStatus');
+
+function populateSelectors(){
+  dateSelect.innerHTML = "";
+  dates.forEach(d=>{
+    const opt = document.createElement('option');
+    opt.value = d;
+    const [y,mm,dd]=d.split('-');
+    opt.textContent = dd+"/"+mm+"/"+(parseInt(y)+543) + " (" + DATA.daily[d]._dayTh + ")";
+    dateSelect.appendChild(opt);
+  });
+  dateSelect.value = currentDate;
+
+  weekSelect.innerHTML = "";
+  weeks.forEach(w=>{
+    const opt = document.createElement('option');
+    opt.value = w; opt.textContent = thWeekLabel(w);
+    weekSelect.appendChild(opt);
+  });
+  weekSelect.value = currentWeek;
+
+  monthSelect.innerHTML = "";
+  months.forEach(m=>{
+    const opt = document.createElement('option');
+    opt.value = m; opt.textContent = thMonthLabel(m);
+    monthSelect.appendChild(opt);
+  });
+  monthSelect.value = currentMonth;
+
+  channelMonthSelect.innerHTML = "";
+  months.forEach(m=>{
+    const opt = document.createElement('option');
+    opt.value = m; opt.textContent = thMonthLabel(m);
+    channelMonthSelect.appendChild(opt);
+  });
+  channelMonthSelect.value = currentMonth;
+}
+buildWeeks();
+populateSelectors();
+populateTargetInputs();
+
+function onDateChange(){ currentDate = dateSelect.value; render(); renderChannel(); }
+function onWeekChange(){ currentWeek = weekSelect.value; render(); renderChannel(); }
+function onMonthChange(){ currentMonth = monthSelect.value; render(); renderChannel(); }
+
+
+// ---------- live data connection: parse an updated Master_Clean2.xlsx directly in the browser ----------
+const BRAND_MAP = {'TT':'Toyota','HD':'Honda','NS':'Nissan','MD':'Mazda','BZ':'Benz','MT':'Mitsubishi','FD':'Ford','BM':'BMW','SV':'Isuzu (SV)'};
+const WEEKDAY_TH = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+function pad2(n){ return n.toString().padStart(2,'0'); }
+function round2(n){ return Math.round(n*100)/100; }
+
+function toJsDate(val){
+  if(val instanceof Date) return val;
+  if(typeof val === 'number') return new Date(Math.round((val-25569)*86400*1000));
+  const d = new Date(val);
+  return isNaN(d) ? null : d;
+}
+
+function buildDataFromRows(rows){
+  const branchesSet = new Set();
+  const dailyMap = {}, monthlyMap = {};
+  const groupAgg = {}, sourceAgg = {}, sourceTypeAgg = {}, brandAgg = {}, groupSourceAgg = {}, sourceTypeSourceAgg = {};
+  const ONLINE_SOURCES = ['Facebook', 'Line @', 'Line@', 'LINE @', 'LINE@', 'GOOGLE', 'Google', 'google'];
+  let totalRevenue = 0, totalBills = 0;
+
+  function ensureStat(obj, key){
+    if(!obj[key]) obj[key] = {revenue:0, bills:0, qty:0, discount:0, returning:0};
+    return obj[key];
+  }
+  const groupAggD = {}, sourceAggD = {}, sourceTypeAggD = {}, brandAggD = {}, groupSourceAggD = {}, sourceTypeSourceAggD = {};
+  function ensureAgg(obj, month, name){
+    if(!obj[month]) obj[month] = {};
+    if(!obj[month][name]) obj[month][name] = {revenue:0, count:0};
+    return obj[month][name];
+  }
+
+  rows.forEach(r=>{
+    const branch = r['สาขา'];
+    const rawDate = r['วันที่เอกสาร'];
+    if(!branch || !rawDate) return;
+    const d = toJsDate(rawDate);
+    if(!d) return;
+    branchesSet.add(branch);
+    const dateStr = d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
+    const monthStr = d.getFullYear()+'-'+pad2(d.getMonth()+1);
+    const revenue = Number(r['ราคารวม'])||0;
+    const discount = Number(r['ส่วนลด'])||0;
+    const qty = Number(r['จำนวนที่สั่ง'])||0;
+    const group = r['กลุ่ม'] || 'ไม่ระบุ';
+    const source = r['ช่องทางที่รู้จักCJAUTO'] || 'ไม่ระบุที่มา';
+    const sourceType = ONLINE_SOURCES.includes(source) ? 'Online' : 'Offline';
+    const brandCode = r['ยี่ห้อรถยนต์'] || '';
+    const brandName = BRAND_MAP[brandCode] || brandCode;
+    const isReturning = group === 'ลูกค้าเก่า' ? 1 : 0;
+
+    if(!dailyMap[dateStr]) dailyMap[dateStr] = {_dayTh: WEEKDAY_TH[d.getDay()]};
+    const dstat = ensureStat(dailyMap[dateStr], branch);
+    dstat.revenue += revenue; dstat.bills += 1; dstat.qty += qty; dstat.discount += discount; dstat.returning += isReturning;
+
+    if(!monthlyMap[monthStr]) monthlyMap[monthStr] = {};
+    const mstat = ensureStat(monthlyMap[monthStr], branch);
+    mstat.revenue += revenue; mstat.bills += 1; mstat.qty += qty; mstat.discount += discount; mstat.returning += isReturning;
+
+    const ga = ensureAgg(groupAgg, monthStr, group); ga.revenue += revenue; ga.count += 1;
+    const sa = ensureAgg(sourceAgg, monthStr, source); sa.revenue += revenue; sa.count += 1;
+    const gaD = ensureAgg(groupAggD, dateStr, group); gaD.revenue += revenue; gaD.count += 1;
+    const saD = ensureAgg(sourceAggD, dateStr, source); saD.revenue += revenue; saD.count += 1;
+    const staD = ensureAgg(sourceTypeAggD, dateStr, sourceType); staD.revenue += revenue; staD.count += 1;
+    const baD = ensureAgg(brandAggD, dateStr, brandName); baD.revenue += revenue; baD.count += 1;
+    if(!groupSourceAggD[dateStr]) groupSourceAggD[dateStr] = {};
+    if(!groupSourceAggD[dateStr][group]) groupSourceAggD[dateStr][group] = {};
+    if(!groupSourceAggD[dateStr][group][source]) groupSourceAggD[dateStr][group][source] = {revenue:0, count:0};
+    groupSourceAggD[dateStr][group][source].revenue += revenue; groupSourceAggD[dateStr][group][source].count += 1;
+    if(!sourceTypeSourceAggD[dateStr]) sourceTypeSourceAggD[dateStr] = {};
+    if(!sourceTypeSourceAggD[dateStr][sourceType]) sourceTypeSourceAggD[dateStr][sourceType] = {};
+    if(!sourceTypeSourceAggD[dateStr][sourceType][source]) sourceTypeSourceAggD[dateStr][sourceType][source] = {revenue:0, count:0};
+    sourceTypeSourceAggD[dateStr][sourceType][source].revenue += revenue; sourceTypeSourceAggD[dateStr][sourceType][source].count += 1;
+    const sta = ensureAgg(sourceTypeAgg, monthStr, sourceType); sta.revenue += revenue; sta.count += 1;
+    const ba = ensureAgg(brandAgg, monthStr, brandName); ba.revenue += revenue; ba.count += 1;
+
+    if(!groupSourceAgg[monthStr]) groupSourceAgg[monthStr] = {};
+    if(!groupSourceAgg[monthStr][group]) groupSourceAgg[monthStr][group] = {};
+    if(!groupSourceAgg[monthStr][group][source]) groupSourceAgg[monthStr][group][source] = {revenue:0, count:0};
+    groupSourceAgg[monthStr][group][source].revenue += revenue;
+    groupSourceAgg[monthStr][group][source].count += 1;
+
+    if(!sourceTypeSourceAgg[monthStr]) sourceTypeSourceAgg[monthStr] = {};
+    if(!sourceTypeSourceAgg[monthStr][sourceType]) sourceTypeSourceAgg[monthStr][sourceType] = {};
+    if(!sourceTypeSourceAgg[monthStr][sourceType][source]) sourceTypeSourceAgg[monthStr][sourceType][source] = {revenue:0, count:0};
+    sourceTypeSourceAgg[monthStr][sourceType][source].revenue += revenue;
+    sourceTypeSourceAgg[monthStr][sourceType][source].count += 1;
+
+    totalRevenue += revenue; totalBills += 1;
+  });
+
+  Object.values(dailyMap).forEach(o=>Object.keys(o).forEach(k=>{ if(k!=='_dayTh'){ o[k].revenue=round2(o[k].revenue); o[k].qty=round2(o[k].qty); o[k].discount=round2(o[k].discount); } }));
+  Object.values(monthlyMap).forEach(o=>Object.keys(o).forEach(k=>{ o[k].revenue=round2(o[k].revenue); o[k].qty=round2(o[k].qty); o[k].discount=round2(o[k].discount); }));
+
+  function topList(agg, n){
+    const out = {};
+    Object.keys(agg).forEach(m=>{
+      const arr = Object.keys(agg[m]).map(name=>({name, revenue: round2(agg[m][name].revenue), count: agg[m][name].count}));
+      arr.sort((a,b)=>b.revenue-a.revenue);
+      out[m] = arr.slice(0,n);
+    });
+    return out;
+  }
+
+  function groupTopListWithBreakdown(agg, breakdownAgg, n){
+    const out = {};
+    Object.keys(agg).forEach(m=>{
+      const arr = Object.keys(agg[m]).map(name=>{
+        const bd = (breakdownAgg[m] && breakdownAgg[m][name]) ? breakdownAgg[m][name] : {};
+        const items = Object.keys(bd).map(sname=>({name: sname, revenue: round2(bd[sname].revenue), count: bd[sname].count}));
+        items.sort((a,b)=>b.revenue-a.revenue);
+        return {name, revenue: round2(agg[m][name].revenue), count: agg[m][name].count, items};
+      });
+      arr.sort((a,b)=>b.revenue-a.revenue);
+      out[m] = arr.slice(0,n);
+    });
+    return out;
+  }
+
+  return {
+    branches: Array.from(branchesSet).sort(),
+    months: Object.keys(monthlyMap).sort(),
+    dates: Object.keys(dailyMap).sort(),
+    daily: dailyMap,
+    monthly: monthlyMap,
+    groupMonth: groupTopListWithBreakdown(groupAgg, groupSourceAgg, 10),
+    sourceMonth: topList(sourceAgg, 999),
+    groupDaily: groupTopListWithBreakdown(groupAggD, groupSourceAggD, 10),
+    sourceDaily: topList(sourceAggD, 999),
+    sourceTypeDaily: groupTopListWithBreakdown(sourceTypeAggD, sourceTypeSourceAggD, 999),
+    brandDaily: topList(brandAggD, 8),
+    sourceTypeMonth: groupTopListWithBreakdown(sourceTypeAgg, sourceTypeSourceAgg, 999),
+    brandMonth: topList(brandAgg, 8),
+    totalRevenue: round2(totalRevenue),
+    totalBills: totalBills
+  };
+}
+
+function loadNewData(newData, sourceLabel){
+  DATA = newData;
+  branches = DATA.branches;
+  dates = DATA.dates;
+  months = DATA.months;
+  currentPeriod = 'daily';
+  document.getElementById('btnDaily').classList.add('active');
+  document.getElementById('btnWeekly').classList.remove('active');
+  document.getElementById('btnMonthly').classList.remove('active');
+  dateSelect.style.display = 'inline-block';
+  weekSelect.style.display = 'none';
+  monthSelect.style.display = 'none';
+  currentDate = dates[dates.length-1];
+  currentMonth = months[months.length-1];
+  currentWeek = null;
+  buildWeeks();
+  populateSelectors();
+  populateTargetInputs();
+  render();
+  renderChannel();
+}
+
+function handleFileUpload(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  uploadStatusEl.textContent = "กำลังประมวลผล " + file.name + " ...";
+  uploadStatusEl.classList.remove('err');
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      const wb = XLSX.read(e.target.result, {type:'array', cellDates:true});
+      const sheetName = wb.SheetNames.includes('Data') ? 'Data' : wb.SheetNames[0];
+      const rows = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], {defval:''});
+      const newData = buildDataFromRows(rows);
+      if(newData.dates.length === 0){ throw new Error("ไม่พบข้อมูลที่อ่านได้ในไฟล์นี้"); }
+      loadNewData(newData);
+      uploadStatusEl.textContent = "✅ อัพเดตแล้วจาก " + file.name + " · " + newData.totalBills.toLocaleString('th-TH') + " บิล · ข้อมูลถึง " + thDateLabel(newData.dates[newData.dates.length-1]);
+    }catch(err){
+      console.error(err);
+      uploadStatusEl.classList.add('err');
+      uploadStatusEl.textContent = "❌ อ่านไฟล์ไม่สำเร็จ: " + err.message;
+    }
+  };
+  reader.onerror = function(){
+    uploadStatusEl.classList.add('err');
+    uploadStatusEl.textContent = "❌ ไม่สามารถอ่านไฟล์ได้";
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+const ADMIN_PASSWORD = "mkt001";
+
+function showAdminPanel(){
+  document.getElementById('adminPanel').style.display = 'flex';
+  document.getElementById('adminLoginLink').textContent = '🔓 ผู้ดูแลระบบ (ปลดล็อกแล้ว) — คลิกเพื่อซ่อน';
+}
+
+function hideAdminPanel(){
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('adminLoginLink').textContent = '🔒 สำหรับผู้ดูแลระบบ';
+}
+
+function toggleAdminLogin(){
+  const unlocked = sessionStorage.getItem('cjAdminUnlocked') === '1';
+  const panelVisible = document.getElementById('adminPanel').style.display === 'flex';
+  if(unlocked){
+    panelVisible ? hideAdminPanel() : showAdminPanel();
+    return;
+  }
+  const pin = prompt('ใส่รหัสผ่านผู้ดูแลระบบ:');
+  if(pin === null) return;
+  if(pin === ADMIN_PASSWORD){
+    sessionStorage.setItem('cjAdminUnlocked', '1');
+    showAdminPanel();
+  } else {
+    alert('รหัสผ่านไม่ถูกต้อง');
+  }
+}
+
+(function initAdminGate(){
+  if(sessionStorage.getItem('cjAdminUnlocked') === '1'){
+    document.getElementById('adminLoginLink').textContent = '🔓 ผู้ดูแลระบบ (ปลดล็อกแล้ว) — คลิกเพื่อซ่อน';
+  }
+})();
+
+function extractSheetIdAndGid(url){
+  const idMatch = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  const id = idMatch ? idMatch[1] : null;
+  const gidMatch = url.match(/[?#&]gid=([0-9]+)/);
+  const gid = gidMatch ? gidMatch[1] : null;
+  return {id, gid};
+}
+
+function parseCsvText(text){
+  // minimal RFC4180-ish CSV parser (handles quoted fields with commas/newlines/escaped quotes)
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for(let i=0;i<text.length;i++){
+    const c = text[i];
+    if(inQuotes){
+      if(c === '"'){
+        if(text[i+1] === '"'){ field += '"'; i++; } else { inQuotes = false; }
+      } else { field += c; }
+    } else {
+      if(c === '"'){ inQuotes = true; }
+      else if(c === ','){ row.push(field); field=''; }
+      else if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=''; }
+      else if(c === '\r'){ /* skip, \n handles newline */ }
+      else { field += c; }
+    }
+  }
+  if(field.length || row.length){ row.push(field); rows.push(row); }
+  if(!rows.length) return [];
+  const headers = rows[0].map(h=>h.trim());
+  return rows.slice(1).filter(r=>r.some(v=>v!=='')).map(r=>{
+    const obj = {};
+    headers.forEach((h,idx)=>{ obj[h] = r[idx] !== undefined ? r[idx] : ''; });
+    return obj;
+  });
+}
+
+async function handleGoogleSheetLoad(){
+  const statusEl = document.getElementById('sheetStatus');
+  const url = document.getElementById('sheetUrlInput').value.trim();
+  if(!url){ statusEl.classList.add('err'); statusEl.textContent = '❌ กรุณาวางลิงก์ Google Sheet ก่อน'; return; }
+  const {id, gid} = extractSheetIdAndGid(url);
+  if(!id){ statusEl.classList.add('err'); statusEl.textContent = '❌ ลิงก์ไม่ถูกต้อง ตรวจสอบว่าเป็นลิงก์ Google Sheet'; return; }
+  statusEl.classList.remove('err');
+  statusEl.textContent = 'กำลังดึงข้อมูลจาก Google Sheet...';
+  const csvUrl = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv${gid ? '&gid='+gid : ''}`;
+  try{
+    const res = await fetch(csvUrl);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    if(text.trim().startsWith('<')) throw new Error('ชีตนี้ยังไม่เปิดสิทธิ์ "ทุกคนที่มีลิงก์ดูได้" หรือลิงก์ไม่ถูกต้อง');
+    const rows = parseCsvText(text);
+    if(!rows.length) throw new Error('ไม่พบข้อมูลในชีตนี้');
+    const newData = buildDataFromRows(rows);
+    if(newData.dates.length === 0) throw new Error('ไม่พบข้อมูลที่อ่านได้ — ตรวจสอบว่าหัวคอลัมน์ตรงกับ Master Clean2 (สาขา, วันที่เอกสาร, ราคารวม ฯลฯ)');
+    loadNewData(newData);
+    statusEl.textContent = '✅ อัพเดตแล้วจาก Google Sheet · ' + newData.totalBills.toLocaleString('th-TH') + ' บิล · ข้อมูลถึง ' + thDateLabel(newData.dates[newData.dates.length-1]);
+  }catch(err){
+    console.error(err);
+    statusEl.classList.add('err');
+    statusEl.textContent = '❌ ดึงข้อมูลไม่สำเร็จ: ' + err.message;
+  }
+}
+
+function currentRecords(){
+  if(currentPeriod === 'daily') return DATA.daily[currentDate];
+  if(currentPeriod === 'weekly') return (WEEKS[currentWeek] || {rec:{}}).rec;
+  return DATA.monthly[currentMonth];
+}
+function dateAddDays(dateStr, delta){
+  const [y,m,d] = dateStr.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  dt.setDate(dt.getDate()+delta);
+  return dt.getFullYear()+'-'+pad2(dt.getMonth()+1)+'-'+pad2(dt.getDate());
+}
+function sameDayPrevMonth(dateStr){
+  const [y,m,d] = dateStr.split('-').map(Number);
+  const targetYear = m === 1 ? y-1 : y;
+  const targetMonth = m === 1 ? 12 : m-1;
+  const lastDay = new Date(targetYear, targetMonth, 0).getDate();
+  const day = Math.min(d, lastDay);
+  return targetYear+'-'+pad2(targetMonth)+'-'+pad2(day);
+}
+function prevBusinessDate(d){
+  // previous day that actually has data (skips closed days e.g. Sunday), not just calendar day-1
+  const idx = dates.indexOf(d);
+  return idx > 0 ? dates[idx-1] : null;
+}
+// week comparison keys: WoW = previous week, MoM = 4 weeks earlier (same week of previous month)
+function prevWeekKey(w){ return dateAddDays(w, -7); }
+function momWeekKey(w){ return weekStartOf(sameDayPrevMonth(w)); }
+function weekRecords(w){ return WEEKS[w] ? WEEKS[w].rec : null; }
+function getDoDRecords(){
+  if(currentPeriod === 'daily') return DATA.daily[prevBusinessDate(currentDate)] || null;
+  if(currentPeriod === 'weekly') return weekRecords(prevWeekKey(currentWeek));
+  return null;
+}
+function getMoMRecords(){
+  if(currentPeriod === 'daily'){
+    return DATA.daily[sameDayPrevMonth(currentDate)] || null;
+  } else if(currentPeriod === 'weekly'){
+    return weekRecords(momWeekKey(currentWeek));
+  } else {
+    const idx = months.indexOf(currentMonth);
+    return idx > 0 ? DATA.monthly[months[idx-1]] : null;
+  }
+}
+function prevPeriodRecords(){
+  if(currentPeriod === 'daily'){
+    const idx = dates.indexOf(currentDate);
+    return idx > 0 ? DATA.daily[dates[idx-1]] : null;
+  } else {
+    const idx = months.indexOf(currentMonth);
+    return idx > 0 ? DATA.monthly[months[idx-1]] : null;
+  }
+}
+
+function sumField(records, field){
+  return branches.reduce((s,b)=> s + (records[b] ? records[b][field] : 0), 0);
+}
+
+function branchDelta(branch, rec, prevRec, field){
+  field = field || 'revenue';
+  if(!prevRec || !prevRec[branch] || !rec[branch]) return null;
+  const cur = rec[branch][field];
+  const prev = prevRec[branch][field];
+  if(!prev) return null;
+  return (cur-prev)/prev*100;
+}
+
+function render(){
+  const rec = currentRecords();
+  const dodRec = getDoDRecords();
+  const momRec = getMoMRecords();
+
+  const total = sumField(rec,'revenue');
+  const bills = sumField(rec,'bills');
+  const returning = sumField(rec,'returning');
+  const totalDiscount = sumField(rec,'discount');
+  const dodTotal = dodRec ? sumField(dodRec,'revenue') : null;
+  const momTotal = momRec ? sumField(momRec,'revenue') : null;
+
+  const isWeek = currentPeriod === 'weekly';
+  const isDay = currentPeriod === 'daily';
+  const isMonth = currentPeriod === 'monthly';
+  const periodLabel = isDay ? thDateLabel(currentDate) : (isWeek ? thWeekLabel(currentWeek) : thMonthLabel(currentMonth));
+  const curDays = isWeek ? weekDayCount(currentWeek) : null;
+  const wowDays = isWeek ? weekDayCount(prevWeekKey(currentWeek)) : null;
+  const momDays = isWeek ? weekDayCount(momWeekKey(currentWeek)) : null;
+
+  document.getElementById('hdrDate').textContent = periodLabel;
+  document.getElementById('hdrTotal').textContent = "ยอดขายรวม " + fmt(total);
+  document.getElementById('mainTotal').textContent = fmt(total);
+  document.getElementById('mainCap').textContent = isDay ? "ยอดขายรวมวันนี้ (6 สาขา)"
+    : (isWeek ? "ยอดขายรวมสัปดาห์นี้ (6 สาขา · " + curDays + " วัน)" : "ยอดขายสะสมเดือนนี้ (6 สาขา)");
+
+  const targetBlock = document.getElementById('targetOverviewBlock');
+  if(isMonth && TARGETS.overall > 0){
+    const pct = Math.min(total / TARGETS.overall * 100, 999);
+    targetBlock.style.display = '';
+    document.getElementById('targetOverviewText').textContent =
+      fmt(total) + " / " + fmt(TARGETS.overall) + " (" + pct.toFixed(1) + "%)";
+    const fillEl = document.getElementById('targetOverviewFill');
+    fillEl.style.width = Math.min(pct, 100) + "%";
+    fillEl.style.background = pct >= 100 ? "var(--green)" : "var(--amber-1)";
+  } else {
+    targetBlock.style.display = 'none';
+  }
+
+  const deltaDodEl = document.getElementById('mainDelta');
+  const deltaMomEl = document.getElementById('mainDeltaMoM');
+  function setDelta(el, cur, prev, text, noText){
+    if(prev !== null && prev > 0){
+      const pct = (cur-prev)/prev*100;
+      el.textContent = (pct>=0?"▲ +":"▼ ") + pct.toFixed(1) + "% " + text;
+      el.className = "delta " + (pct>=0 ? "up":"down");
+    } else {
+      el.textContent = noText;
+      el.className = "delta flat";
+    }
+  }
+  if(isDay){
+    setDelta(deltaDodEl, total, dodTotal, "เทียบวันก่อนหน้า (DoD)", "ไม่มีข้อมูลเทียบวันก่อนหน้า (DoD)");
+    setDelta(deltaMomEl, total, momTotal, "เทียบวันเดียวกันเดือนก่อน (MoM)", "ไม่มีข้อมูลเทียบวันเดียวกันเดือนก่อน (MoM)");
+    deltaMomEl.style.display = "";
+  } else if(isWeek){
+    setDelta(deltaDodEl, total, dodTotal, "เทียบสัปดาห์ก่อนหน้า (WoW · " + curDays + " วัน vs " + wowDays + " วัน)", "ไม่มีข้อมูลเทียบสัปดาห์ก่อนหน้า (WoW)");
+    setDelta(deltaMomEl, total, momTotal, "เทียบสัปดาห์เดียวกันเดือนก่อน (MoM · " + curDays + " วัน vs " + momDays + " วัน)", "ไม่มีข้อมูลเทียบสัปดาห์เดียวกันเดือนก่อน (MoM)");
+    deltaMomEl.style.display = "";
+  } else {
+    setDelta(deltaDodEl, total, momTotal, "เทียบเดือนก่อนหน้า (MoM)", "ไม่มีข้อมูลเปรียบเทียบ");
+    deltaMomEl.style.display = "none";
+  }
+
+  document.getElementById('statBills').textContent = fmtNum(bills) + " บิล";
+  document.getElementById('statAvg').textContent = bills>0 ? fmt(total/bills) : "฿0";
+
+  const sortedByRevenue = [...branches].sort((a,b)=> (rec[b]?rec[b].revenue:0) - (rec[a]?rec[a].revenue:0));
+  const sorted = [...branches].sort((a,b)=> a.localeCompare(b, undefined, {numeric:true}));
+  const top = sortedByRevenue[0], bottom = sortedByRevenue[sortedByRevenue.length-1];
+  const topRev = rec[top] ? rec[top].revenue : 0;
+  const bottomRev = rec[bottom] ? rec[bottom].revenue : 0;
+
+  const firstLabel = isWeek ? 'WoW' : 'DoD';
+  const showFirst = isDay || isWeek;
+
+  document.getElementById('noticeTop').innerHTML = "🏆 <span><b>"+top+"</b> ยอดขายสูงสุด — " + fmt(topRev) + (total>0 ? " ("+(topRev/total*100).toFixed(1)+"% ของยอดรวม)" : "") + "</span>";
+  document.getElementById('noticeLow').innerHTML = "🔻 <span><b>"+bottom+"</b> ยอดขายต่ำสุด — " + fmt(bottomRev) + "</span>";
+  document.getElementById('branchListTitle').textContent = "🏬 สรุปยอดขายรายสาขา (เทียบ"
+    + (isDay ? 'วันก่อนหน้า/เดือนก่อนหน้า - DoD & MoM'
+      : isWeek ? 'สัปดาห์ก่อนหน้า/เดือนก่อนหน้า - WoW & MoM · ' + curDays + ' วัน vs ' + wowDays + '/' + momDays + ' วัน'
+      : 'เดือนก่อนหน้า - MoM') + ")";
+
+
+  // branch list
+  const listEl = document.getElementById('branchList');
+  listEl.innerHTML = "";
+  sorted.forEach((b,i)=>{
+    const r = rec[b] || {revenue:0,bills:0,discount:0};
+    const share = total>0 ? (r.revenue/total*100) : 0;
+    const discountPct = r.revenue>0 ? (r.discount/r.revenue*100) : 0;
+    const cls = b===top ? "green" : (b===bottom ? "red" : "navy");
+
+    function deltaChip(delta, label){
+      return delta===null
+        ? `<span class="mini-delta flat">ไม่มีข้อมูล ${label}</span>`
+        : `<span class="mini-delta ${delta>=0?'up':'down'}">${delta>=0?'▲ +':'▼ '}${delta.toFixed(1)}% ${label}</span>`;
+    }
+
+    let deltaHtml;
+    if(showFirst){
+      const dodDelta = branchDelta(b, rec, dodRec, 'revenue');
+      const momDelta = branchDelta(b, rec, momRec, 'revenue');
+      deltaHtml = deltaChip(dodDelta,firstLabel) + deltaChip(momDelta,'MoM');
+    } else {
+      const momDelta = branchDelta(b, rec, momRec, 'revenue');
+      deltaHtml = deltaChip(momDelta,'MoM');
+    }
+
+
+    const row = document.createElement('div');
+    row.className = "branch-row";
+    row.innerHTML = `
+      <div class="branch-rank">${i+1}</div>
+      <div style="flex:1;">
+        <div class="branch-name">${b}</div>
+        <div class="branch-sub">${r.bills} บิล · เฉลี่ย ${r.bills>0?fmt(r.revenue/r.bills):'฿0'}/บิล</div>
+        <div class="branch-sub">ส่วนลด ${fmt(r.discount)} (${discountPct.toFixed(1)}% ของยอดขาย)</div>
+      </div>
+      <div class="branch-right">
+        <div class="branch-amount">${fmt(r.revenue)}</div>
+        <div class="badge ${cls}">${share.toFixed(1)}% ส่วนแบ่ง</div>
+        ${deltaHtml}
+      </div>`;
+    listEl.appendChild(row);
+  });
+
+  // branch table
+  document.getElementById('changeColHeaderDoD').textContent = showFirst ? firstLabel : "—";
+  document.getElementById('changeColHeaderMoM').textContent = "MoM";
+  const tbody = document.getElementById('branchTableBody');
+  tbody.innerHTML = "";
+  sorted.forEach(b=>{
+    const r = rec[b] || {revenue:0,bills:0,discount:0};
+    const share = total>0 ? (r.revenue/total*100) : 0;
+    const discountPct = r.revenue>0 ? (r.discount/r.revenue*100) : 0;
+
+    function deltaCell(delta){
+      return delta===null
+        ? '<span style="color:var(--sub)">—</span>'
+        : `<span style="color:${delta>=0?'var(--green)':'var(--red)'};font-weight:700">${delta>=0?'▲ +':'▼ '}${delta.toFixed(1)}%</span>`;
+    }
+
+    const dodDelta = showFirst ? branchDelta(b, rec, dodRec, 'revenue') : null;
+    const momDelta = branchDelta(b, rec, momRec, 'revenue');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${b}</td><td class="num">${fmt(r.revenue)}</td><td class="num">${fmt(r.discount)}</td><td class="num">${discountPct.toFixed(1)}%</td><td class="num">${r.bills}</td><td class="num">${r.bills>0?fmt(r.revenue/r.bills):'฿0'}</td><td class="num">${share.toFixed(1)}%</td><td class="num">${showFirst ? deltaCell(dodDelta) : '<span style="color:var(--sub)">—</span>'}</td><td class="num">${deltaCell(momDelta)}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // chart
+  document.getElementById('chartTitle').textContent = "📊 ยอดขายรายสาขา — " + periodLabel;
+  const chartEl = document.getElementById('chartBars');
+  chartEl.innerHTML = "";
+  const max = Math.max(...sorted.map(b=> rec[b] ? rec[b].revenue : 0), 1);
+  sorted.forEach((b,i)=>{
+    const r = rec[b] || {revenue:0};
+    const pctWidth = (r.revenue/max*100).toFixed(1);
+    const row = document.createElement('div');
+    row.className = "bar-row";
+    const branchTarget = isMonth ? (TARGETS.branches && TARGETS.branches[b]) : 0;
+    let targetHtml = '';
+    if(branchTarget > 0){
+      const tPct = Math.min(r.revenue / branchTarget * 100, 999);
+      const tFillPct = Math.min(tPct, 100);
+      const tColor = tPct >= 100 ? 'var(--green)' : 'var(--amber-1)';
+      targetHtml = `<div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--sub);margin:3px 0 2px;">
+          <span>🎯 เป้า ${fmt(branchTarget)}</span><span style="font-weight:700;">${tPct.toFixed(1)}%</span>
+        </div>
+        <div class="bar-track flat" style="height:6px;"><div class="bar-fill flat" style="width:${tFillPct}%;background:${tColor};"></div></div>`;
+    }
+    row.innerHTML = `<div class="bar-label"><span>${b}</span><span class="amt">${fmt(r.revenue)}</span></div><div class="bar-track flat"><div class="bar-fill flat" style="width:${pctWidth}%"></div></div>${targetHtml}`;
+    chartEl.appendChild(row);
+  });
+}
+
+function listToMap(list){
+  const map = {};
+  (list||[]).forEach(it=>{ map[it.name] = it; });
+  return map;
+}
+function pctDelta(cur, prev){
+  if(prev === null || prev === undefined) return null;
+  if(!prev) return null;
+  return (cur-prev)/prev*100;
+}
+function deltaChipHtml(delta, label){
+  return delta===null
+    ? `<span class="mini-delta flat">— ${label}</span>`
+    : `<span class="mini-delta ${delta>=0?'up':'down'}">${delta>=0?'▲ +':'▼ '}${delta.toFixed(1)}% ${label}</span>`;
+}
+
+// aggregate a set of daily channel lists (with optional nested items) into one list
+function aggregateDailyLists(mapByDate, days){
+  const acc = {};
+  let hasAny = false;
+  (days||[]).forEach(d=>{
+    const list = mapByDate && mapByDate[d];
+    if(!list) return;
+    hasAny = true;
+    list.forEach(it=>{
+      const t = acc[it.name] || (acc[it.name] = {name:it.name, revenue:0, count:0, _sub:{}});
+      t.revenue += it.revenue||0;
+      t.count += it.count||0;
+      (it.items||[]).forEach(si=>{
+        const s = t._sub[si.name] || (t._sub[si.name] = {name:si.name, revenue:0, count:0});
+        s.revenue += si.revenue||0; s.count += si.count||0;
+      });
+    });
+  });
+  const out = Object.values(acc).map(t=>({
+    name: t.name, revenue: t.revenue, count: t.count,
+    items: Object.values(t._sub).sort((a,b)=>b.revenue-a.revenue)
+  })).sort((a,b)=>b.revenue-a.revenue);
+  return { list: out, has: hasAny };
+}
+
+function renderChannel(){
+  const dailyMode = currentPeriod === 'daily' && !!DATA.sourceDaily;
+  const weeklyMode = currentPeriod === 'weekly' && !!DATA.sourceDaily;
+  const labelEl = document.getElementById('channelPeriodLabel');
+  channelMonthSelect.style.display = (dailyMode || weeklyMode) ? 'none' : 'inline-block';
+
+  let groupData, sourceData, sourceTypeData, brandData;
+  let prevSets = [];
+
+  if(dailyMode){
+    const d = currentDate;
+    const dPrev = prevBusinessDate(d);
+    const dMom = sameDayPrevMonth(d);
+    groupData = DATA.groupDaily[d] || [];
+    sourceData = DATA.sourceDaily[d] || [];
+    sourceTypeData = DATA.sourceTypeDaily[d] || [];
+    brandData = DATA.brandDaily[d] || [];
+    prevSets = [
+      {label:'DoD', group:listToMap(DATA.groupDaily[dPrev]), source:listToMap(DATA.sourceDaily[dPrev]), sourceType:listToMap(DATA.sourceTypeDaily[dPrev]), brand:listToMap(DATA.brandDaily[dPrev]), has: !!DATA.sourceDaily[dPrev]},
+      {label:'MoM', group:listToMap(DATA.groupDaily[dMom]), source:listToMap(DATA.sourceDaily[dMom]), sourceType:listToMap(DATA.sourceTypeDaily[dMom]), brand:listToMap(DATA.brandDaily[dMom]), has: !!DATA.sourceDaily[dMom]}
+    ];
+    if(labelEl) labelEl.textContent = thDateLabel(d) + " · เทียบ DoD / MoM";
+  } else if(weeklyMode){
+    const w = currentWeek;
+    const wPrev = prevWeekKey(w), wMom = momWeekKey(w);
+    const daysOf = k => (WEEKS[k] ? WEEKS[k].days : []);
+    const cur = {
+      group: aggregateDailyLists(DATA.groupDaily, daysOf(w)),
+      source: aggregateDailyLists(DATA.sourceDaily, daysOf(w)),
+      sourceType: aggregateDailyLists(DATA.sourceTypeDaily, daysOf(w)),
+      brand: aggregateDailyLists(DATA.brandDaily, daysOf(w))
+    };
+    groupData = cur.group.list; sourceData = cur.source.list;
+    sourceTypeData = cur.sourceType.list; brandData = cur.brand.list;
+    function setFor(key, label){
+      const g = aggregateDailyLists(DATA.groupDaily, daysOf(key));
+      const s = aggregateDailyLists(DATA.sourceDaily, daysOf(key));
+      const st = aggregateDailyLists(DATA.sourceTypeDaily, daysOf(key));
+      const br = aggregateDailyLists(DATA.brandDaily, daysOf(key));
+      return {label:label, group:listToMap(g.list), source:listToMap(s.list), sourceType:listToMap(st.list), brand:listToMap(br.list), has: s.has};
+    }
+    prevSets = [ setFor(wPrev, 'WoW'), setFor(wMom, 'MoM') ];
+    if(labelEl) labelEl.textContent = thWeekLabel(w) + " · เทียบ WoW / MoM ("
+      + weekDayCount(w) + " วัน vs " + weekDayCount(wPrev) + " / " + weekDayCount(wMom) + " วัน)";
+  } else {
+    const m = (currentPeriod === 'monthly') ? currentMonth : channelMonthSelect.value;
+    channelMonthSelect.value = m;
+    const idx = months.indexOf(m);
+    const mPrev = idx > 0 ? months[idx-1] : null;
+    groupData = DATA.groupMonth[m] || [];
+    sourceData = DATA.sourceMonth[m] || [];
+    sourceTypeData = DATA.sourceTypeMonth[m] || [];
+    brandData = DATA.brandMonth[m] || [];
+    prevSets = [
+      {label:'MoM', group:listToMap(mPrev && DATA.groupMonth[mPrev]), source:listToMap(mPrev && DATA.sourceMonth[mPrev]), sourceType:listToMap(mPrev && DATA.sourceTypeMonth[mPrev]), brand:listToMap(mPrev && DATA.brandMonth[mPrev]), has: !!mPrev}
+    ];
+    if(labelEl) labelEl.textContent = (currentPeriod === 'daily' || currentPeriod === 'weekly')
+      ? "อัพโหลดไฟล์ Excel เพื่อดูข้อมูลรายวัน/รายสัปดาห์ของแหล่งที่มา"
+      : thMonthLabel(m) + " · เทียบ MoM";
+  }
+
+
+  function deltasFor(kind, it){
+    return prevSets.map(ps=>{
+      const prev = ps[kind][it.name];
+      return deltaChipHtml(pctDelta(it.revenue, prev ? prev.revenue : (ps.has ? 0 : null)), ps.label);
+    }).join('');
+  }
+
+
+  function drawBars(containerId, items, kind){
+    const el = document.getElementById(containerId);
+    el.innerHTML = "";
+    const total = items.reduce((s,x)=>s+x.revenue,0);
+    items.forEach((it,i)=>{
+      const share = total>0 ? (it.revenue/total*100) : 0;
+      const row = document.createElement('div');
+      row.className = "branch-row";
+      row.innerHTML = `
+        <div class="branch-rank ${i===0?'top':''}">${i+1}</div>
+        <div style="flex:1;">
+          <div class="branch-name">${it.name}</div>
+          <div class="branch-sub">${it.count} บิล · ${share.toFixed(1)}% ของยอดกลุ่มนี้</div>
+        </div>
+        <div class="branch-right">
+          <div class="branch-amount">${fmt(it.revenue)}</div>
+          ${deltasFor(kind, it)}
+        </div>`;
+      el.appendChild(row);
+    });
+  }
+  function drawGroupBars(containerId, items, kind){
+    const el = document.getElementById(containerId);
+    el.innerHTML = "";
+    const total = items.reduce((s,x)=>s+x.revenue,0);
+    items.forEach((it,i)=>{
+      const share = total>0 ? (it.revenue/total*100) : 0;
+      const row = document.createElement('div');
+      row.className = "branch-row";
+      row.style.cursor = "pointer";
+      row.innerHTML = `
+        <div class="branch-rank ${i===0?'top':''}">${i+1}</div>
+        <div style="flex:1;">
+          <div class="branch-name">${it.name} <span style="color:var(--sub);font-weight:400;">▾</span></div>
+          <div class="branch-sub">${it.count} บิล · ${share.toFixed(1)}% ของยอดรวม</div>
+        </div>
+        <div class="branch-right">
+          <div class="branch-amount">${fmt(it.revenue)}</div>
+          ${deltasFor(kind, it)}
+        </div>`;
+      el.appendChild(row);
+
+
+      const sub = document.createElement('div');
+      sub.style.display = "none";
+      sub.style.padding = "0 4px 10px 40px";
+      if(it.items && it.items.length){
+        const groupTotal = it.revenue || 1;
+        sub.innerHTML = it.items.map(si=>{
+          const siShare = groupTotal>0 ? (si.revenue/groupTotal*100) : 0;
+          return `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--line);font-size:12px;">
+            <span style="color:var(--ink);">• ${si.name} <span style="color:var(--sub);">(${si.count} บิล)</span></span>
+            <span style="color:var(--sub);">${fmt(si.revenue)} · ${siShare.toFixed(1)}%</span>
+          </div>`;
+        }).join('');
+      } else {
+        sub.innerHTML = `<div style="font-size:12px;color:var(--sub);padding:6px 0;">ไม่มีข้อมูลย่อยในรายงานนี้ — อัพโหลดไฟล์ Excel ต้นฉบับเพื่อดูรายละเอียดช่องทางย่อย</div>`;
+      }
+      el.appendChild(sub);
+
+      row.addEventListener('click', ()=>{
+        sub.style.display = sub.style.display === 'none' ? 'block' : 'none';
+      });
+    });
+  }
+  drawGroupBars('groupBars', groupData, 'group');
+}
+
+function setPeriod(period){
+  currentPeriod = period;
+  document.getElementById('btnDaily').classList.toggle('active', period==='daily');
+  document.getElementById('btnWeekly').classList.toggle('active', period==='weekly');
+  document.getElementById('btnMonthly').classList.toggle('active', period==='monthly');
+  dateSelect.style.display = period==='daily' ? 'inline-block' : 'none';
+  weekSelect.style.display = period==='weekly' ? 'inline-block' : 'none';
+  monthSelect.style.display = period==='monthly' ? 'inline-block' : 'none';
+  render();
+  renderChannel();
+}
+
+function setTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+  if(tab==='channel') renderChannel();
+}
+
+const LIVE_SHEET_ID = "1D_pPsVuddk_j0_3sr5ykkFX_RK3d1fD-oKUJ_ugKS0M";
+const LIVE_SHEET_GID = "2004228280";
+
+async function autoSyncFromLiveSheet(){
+  const statusEl = document.getElementById('liveSyncStatus');
+  try{
+    const csvUrl = `https://docs.google.com/spreadsheets/d/${LIVE_SHEET_ID}/gviz/tq?tqx=out:csv&gid=${LIVE_SHEET_GID}`;
+    const res = await fetch(csvUrl);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    if(text.trim().startsWith('<')) throw new Error('ชีตยังไม่เปิดสิทธิ์ Anyone with the link: Viewer');
+    const rows = parseCsvText(text);
+    if(!rows.length) throw new Error('ไม่พบข้อมูลในชีต');
+    const newData = buildDataFromRows(rows);
+    if(newData.dates.length === 0) throw new Error('อ่านข้อมูลจากชีตไม่ได้ (หัวคอลัมน์ไม่ตรง)');
+    loadNewData(newData);
+    statusEl.textContent = '🟢 ข้อมูลสด จาก Google Sheet · อัพเดทถึง ' + thDateLabel(newData.dates[newData.dates.length-1]);
+    statusEl.style.color = 'rgba(255,255,255,.9)';
+  }catch(err){
+    console.error('auto sync failed:', err);
+    statusEl.textContent = '⚪ ใช้ข้อมูลสำรองในไฟล์ (เชื่อมต่อ Google Sheet ไม่ได้ตอนนี้)';
+    render();
+    renderChannel();
+  }
+}
+
+render();
+renderChannel();
+uploadStatusEl.textContent = "ข้อมูลปัจจุบัน: " + DATA.totalBills.toLocaleString('th-TH') + " บิล · ถึง " + thDateLabel(dates[dates.length-1]) + " · แนบไฟล์ Master_Clean2.xlsx เวอร์ชันใหม่เพื่ออัพเดต";
+autoSyncFromLiveSheet();
+</script>
+</body>
+</html>
